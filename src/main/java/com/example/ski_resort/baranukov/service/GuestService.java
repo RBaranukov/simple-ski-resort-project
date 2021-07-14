@@ -10,7 +10,9 @@ public interface GuestService {
 
     List<Guest> getAllGuests();
 
-    void save(Guest guest);
+    Guest save(Guest guest);
+
+    Guest updateGuest(Guest guest);
 
     Guest getGuest(Long id);
 
@@ -19,5 +21,4 @@ public interface GuestService {
     void setCoach(Coach coach, Long id);
 
     void setSkiPass(SkiPass skiPass, Long id);
-
 }

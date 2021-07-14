@@ -16,7 +16,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column defaultValue="1000" name="cost" type="BIGINT">
+            <column defaultValue="1000" name="cost" type="decimal">
                 <constraints nullable="false"/>
             </column>
 
@@ -48,7 +48,7 @@
             </column>
 
             <column name="photo" type="longblob">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
 
             <column name="ski_pass_id" type="BIGINT">

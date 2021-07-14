@@ -8,7 +8,7 @@
     <changeSet  author="rakhim_baranukov"  id="changelog-v1.2">
 
         <createTable  tableName="guests">
-            <column  autoIncrement="true" name="id"  type="BIGINT">
+            <column autoIncrement="true" name="id"  type="BIGINT">
                 <constraints  nullable="false"  primaryKey="true"/>
             </column>
 
@@ -28,12 +28,12 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="ski_pass_id" type="BIGINT">
-                    <constraints nullable="false"/>
+            <column defaultValue="0" name="ski_pass_id" type="BIGINT">
+                    <constraints nullable="true"/>
             </column>
 
-            <column name="coach_id" type="BIGINT">
-                <constraints nullable="false"/>
+            <column defaultValue="0" name="coach_id" type="BIGINT">
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
