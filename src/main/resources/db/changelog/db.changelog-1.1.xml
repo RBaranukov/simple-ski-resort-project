@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog-v1.1" author="rakhim_baranukov">
+
+        <createTable tableName="ski_passes">
+            <column autoIncrement="true" name="id"  type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="duration" type="date">
+                <constraints nullable="false"/>
+            </column>
+
+            <column defaultValue="1000" name="cost" type="decimal">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createTable tableName="coaches">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="name" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="surname" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="category" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="birth_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+
+            <column defaultValue="unknown" name="sex" type="char">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="photo" type="longblob">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="ski_pass_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="guest_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>
