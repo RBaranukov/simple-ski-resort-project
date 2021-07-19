@@ -16,5 +16,5 @@ public interface CoachService {
 
     void deleteCoach(Long id);
 
-    void setPhotoToCoach(Coach coach, String pathNameToPhoto);
+    void setPhotoToCoach(Long id, String pathNameToPhoto);
 }

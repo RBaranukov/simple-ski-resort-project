@@ -5,19 +5,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 
 @Component
 public class CustomizedSetPhotoToCoachImpl implements CustomizedSetPhotoToCoach{
-
-    @PersistenceContext
-    EntityManager entityManager;
 
     @Override
     @Transactional

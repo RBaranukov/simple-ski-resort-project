@@ -1,13 +1,10 @@
 package com.example.ski_resort.baranukov.repository.customized;
 
-import com.example.ski_resort.baranukov.entity.Coach;
-import com.example.ski_resort.baranukov.entity.SkiPass;
-
 public interface CustomizedSetSkiPassAndCoach {
 
-    void setSkiPass(SkiPass skiPass, Long id);
+    void setSkiPassToGuest(Long skiPass_id, Long id);
 
-    void setCoach(Coach coach, Long id);
+    void setCoachToGuest(Long coach_id, Long id);
 
 }
 
