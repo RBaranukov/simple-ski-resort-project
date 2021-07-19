@@ -24,10 +24,10 @@
                                  referencedTableName="ski_passes"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="coaches"
-                                 baseColumnNames="guest_id"
-                                 constraintName="fk_coach_guest_id"
-                                 referencedTableName="guests"
-                                 referencedColumnNames="id"/>
+<!--        <addForeignKeyConstraint baseTableName="coaches"-->
+<!--                                 baseColumnNames="guest_id"-->
+<!--                                 constraintName="fk_coach_guest_id"-->
+<!--                                 referencedTableName="guests"-->
+<!--                                 referencedColumnNames="id"/>-->
     </changeSet>
 </databaseChangeLog>

@@ -1,2 +1,2 @@
-# My Awesome project
+# Project Ski Resort Baranukov
 
