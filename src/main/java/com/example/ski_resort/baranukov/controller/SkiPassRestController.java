@@ -2,14 +2,14 @@ package com.example.ski_resort.baranukov.controller;
 
 import com.example.ski_resort.baranukov.dto.SkiPassDTO;
 import com.example.ski_resort.baranukov.entity.SkiPass;
-import com.example.ski_resort.baranukov.mapper.SkiPassMapper;
 import com.example.ski_resort.baranukov.service.SkiPassService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ski-resort")
@@ -17,34 +17,34 @@ import java.util.stream.Collectors;
 public class SkiPassRestController {
 
     private final @NonNull SkiPassService skiPassService;
-    private final @NonNull SkiPassMapper skiPassMapper;
 
     @GetMapping("/ski-passes")
-    public List<SkiPassDTO> showAllSkiPasses(){
-        return skiPassService.getAllSkiPasses()
-                .stream()
-                .map(skiPassMapper.INSTANCE::toDTO)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<SkiPassDTO>> showAllSkiPasses(){
+        List<SkiPassDTO> skiPassDTOS = skiPassService.getAllSkiPasses();
+        return ResponseEntity.ok(skiPassDTOS);
     }
 
     @GetMapping("/ski-passes/{id}")
-    public SkiPassDTO showSkiPass(@PathVariable Long id){
-        SkiPass skiPass = skiPassService.getSkiPass(id);
-        return skiPassMapper.INSTANCE.toDTO(skiPass);
+    public ResponseEntity<SkiPassDTO> showSkiPass(@PathVariable Long id){
+        SkiPassDTO skiPassDTO = skiPassService.getSkiPass(id);
+        return ResponseEntity.ok(skiPassDTO);
     }
 
     @PostMapping("/ski-passes")
-    public SkiPass addNewSkiPass(@RequestBody SkiPass skiPass){
-        return skiPassService.save(skiPass);
+    public ResponseEntity<SkiPass> addNewSkiPass(@RequestBody SkiPass skiPass){
+        skiPassService.save(skiPass);
+        return new ResponseEntity<>(skiPass, HttpStatus.CREATED);
     }
 
     @PutMapping("/ski-passes/")
-    public SkiPass updateSkiPass(@RequestBody SkiPass skiPass){
-        return skiPassService.updateSkiPass(skiPass);
+    public ResponseEntity<SkiPass> updateSkiPass(@RequestBody SkiPass skiPass){
+        skiPassService.updateSkiPass(skiPass);
+        return ResponseEntity.ok(skiPass);
     }
 
     @DeleteMapping("/ski-passes/{id}")
-    public void deleteSkiPass(@PathVariable Long id){
+    public ResponseEntity<String> deleteSkiPass(@PathVariable Long id){
         skiPassService.deleteById(id);
+        return new ResponseEntity<>(String.format("SkiPass id %s was deleted", id), HttpStatus.NO_CONTENT);
     }
 }

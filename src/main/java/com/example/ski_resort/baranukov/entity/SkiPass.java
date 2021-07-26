@@ -1,8 +1,6 @@
 package com.example.ski_resort.baranukov.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,15 +32,11 @@ public class SkiPass {
     @Column(name = "cost")
     BigDecimal cost;
 
-    @JsonProperty(value = "guest_skiPass")
-    @JsonIgnoreProperties({"skiPass_guest", "coach_guest"})
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "skiPass",
-            cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.PERSIST})
+    @OneToOne(mappedBy = "skiPass", fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     Guest guest;
 
-    @JsonProperty(value = "coach_skiPass")
-    @JsonIgnoreProperties({"skiPass_coach", "guestsList"})
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "skiPass",
-            cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.PERSIST})
+    @OneToOne(mappedBy = "skiPass", fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     Coach coach;
 }

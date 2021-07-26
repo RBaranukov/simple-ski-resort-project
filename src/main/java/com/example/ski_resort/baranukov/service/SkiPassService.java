@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface SkiPassService {
 
-    List<SkiPass> getAllSkiPasses();
+    List<SkiPassDTO> getAllSkiPasses();
 
     SkiPass save (SkiPass skiPass);
 
-    SkiPass getSkiPass(Long id);
+    SkiPassDTO getSkiPass(Long id);
 
     void deleteById(Long id);
 

@@ -1,32 +1,44 @@
 package com.example.ski_resort.baranukov.service;
 
+import com.example.ski_resort.baranukov.dto.GuestDTO;
+import com.example.ski_resort.baranukov.entity.Coach;
+import com.example.ski_resort.baranukov.entity.SkiPass;
+import com.example.ski_resort.baranukov.exception.CoachNotFoundException;
 import com.example.ski_resort.baranukov.exception.GuestNotFoundException;
 import com.example.ski_resort.baranukov.exception.SkiPassNotFoundException;
+import com.example.ski_resort.baranukov.repository.CoachRepository;
 import com.example.ski_resort.baranukov.repository.GuestRepository;
 import com.example.ski_resort.baranukov.entity.Guest;
 
+import com.example.ski_resort.baranukov.repository.SkiPassRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class GuestServiceImpl implements GuestService {
 
     private final @NonNull GuestRepository guestRepository;
+    private final @NonNull CoachRepository coachRepository;
+    private final @NonNull SkiPassRepository skiPassRepository;
 
     @Override
-    public List<Guest> getAllGuests() {
-        return guestRepository.findAll();
+    public List<GuestDTO> getAllGuests() {
+        return guestRepository.findAll()
+                .stream()
+                .map(GuestDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Guest getGuest(Long id) {
-        return guestRepository.findById(id)
-                .orElseThrow(() -> new GuestNotFoundException(id));
+    public GuestDTO getGuest(Long id) {
+        return new GuestDTO(guestRepository.findById(id)
+                .orElseThrow(() -> new GuestNotFoundException(id)));
     }
 
     @Override
@@ -39,6 +51,7 @@ public class GuestServiceImpl implements GuestService {
         Optional<Guest> optional = guestRepository.findById(guest.getId());
         if (optional.isPresent()) {
             Guest updateGuest = optional.get();
+            updateGuest.setId(guest.getId());
             updateGuest.setName(guest.getName());
             updateGuest.setSurname(guest.getSurname());
             updateGuest.setBirthDate(guest.getBirthDate());
@@ -49,16 +62,27 @@ public class GuestServiceImpl implements GuestService {
 
     @Override
     public void deleteGuest(Long id) {
-        guestRepository.deleteById(id);
+        Guest guest = guestRepository.findById(id)
+                .orElseThrow(() -> new GuestNotFoundException(id));
+        guestRepository.delete(guest);
     }
 
     @Override
     public void setCoachToGuest(Long coach_id, Long id) {
-        guestRepository.setCoachToGuest(coach_id, id);
+        Guest guest = guestRepository.findById(id)
+                .orElseThrow(() -> new GuestNotFoundException(id));
+        Coach coach = coachRepository.findById(coach_id)
+                .orElseThrow(() -> new CoachNotFoundException(coach_id));
+        guest.setCoach(coach);
+        coach.getGuests().add(guest);
     }
 
     @Override
     public void setSkiPassToGuest(Long skiPass_id, Long id) {
-        guestRepository.setSkiPassToGuest(skiPass_id, id);
+        Guest guest = guestRepository.findById(id)
+                .orElseThrow(() -> new GuestNotFoundException(id));
+        SkiPass skiPass = skiPassRepository.findById(skiPass_id)
+                .orElseThrow(() -> new SkiPassNotFoundException(skiPass_id));
+        guest.setSkiPass(skiPass);
     }
 }

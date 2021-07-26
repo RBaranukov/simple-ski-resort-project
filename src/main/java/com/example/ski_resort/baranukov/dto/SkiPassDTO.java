@@ -1,15 +1,14 @@
 package com.example.ski_resort.baranukov.dto;
 
+import com.example.ski_resort.baranukov.entity.SkiPass;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
-@Builder
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SkiPassDTO {
 
@@ -17,5 +16,11 @@ public class SkiPassDTO {
 
     LocalDateTime duration;
 
-    Double cost;
+    BigDecimal cost;
+
+    public SkiPassDTO (SkiPass skiPass){
+        this.id = skiPass.getId();
+        this.duration = skiPass.getDuration();
+        this.cost = skiPass.getCost();
+    }
 }

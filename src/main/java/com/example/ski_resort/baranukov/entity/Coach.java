@@ -1,14 +1,11 @@
 package com.example.ski_resort.baranukov.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,11 +25,9 @@ public class Coach {
     Long id;
 
     @Column(name = "name")
-    @NotBlank
     String name;
 
     @Column(name = "surname")
-    @NotBlank
     String surname;
 
     @Column(name = "category")
@@ -49,16 +44,12 @@ public class Coach {
     @Column(columnDefinition = "LONGBLOB", name = "photo")
     byte[] photo;
 
-    @JsonProperty(value = "skiPass_coach")
-    @JsonIgnoreProperties({"guest_skiPass", "coach_skiPass"})
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ski_pass_id")
     SkiPass skiPass;
 
-    @JsonProperty(value = "guestsList")
-    @JsonIgnoreProperties({"skiPass_guest", "coach_guest"})
-    @OneToMany(mappedBy = "coach", cascade = {CascadeType.REFRESH,
-            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST},
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "coach",
+            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     List<Guest> guests;
+
 }

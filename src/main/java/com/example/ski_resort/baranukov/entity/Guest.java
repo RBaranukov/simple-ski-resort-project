@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Setter
@@ -25,11 +24,9 @@ public class Guest {
     Long id;
 
     @Column(name = "name")
-    @NotBlank
     String name;
 
     @Column(name = "surname")
-    @NotBlank
     String surname;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -37,16 +34,14 @@ public class Guest {
     @Column(name = "birth_date")
     LocalDate birthDate;
 
-    @JsonIgnoreProperties({"guest_skiPass", "coach_skiPass"})
-    @JsonProperty(value = "skiPass_guest")
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ski_pass_id")
     SkiPass skiPass;
 
-    @JsonIgnoreProperties({"skiPass_coach", "guestsList"})
-    @JsonProperty(value = "coach_guest")
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "coach_id")
     Coach coach;
 

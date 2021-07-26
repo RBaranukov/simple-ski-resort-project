@@ -2,14 +2,14 @@ package com.example.ski_resort.baranukov.controller;
 
 import com.example.ski_resort.baranukov.dto.CoachDTO;
 import com.example.ski_resort.baranukov.entity.Coach;
-import com.example.ski_resort.baranukov.mapper.CoachMapper;
 import com.example.ski_resort.baranukov.service.CoachService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ski-resort")
@@ -17,39 +17,40 @@ import java.util.stream.Collectors;
 public class CoachRestController {
 
     private final @NonNull CoachService coachService;
-    private final @NonNull CoachMapper coachMapper;
 
     @GetMapping("/coaches")
-    public List<CoachDTO> showAllCoaches(){
-        return coachService.getAllCoaches()
-                .stream()
-                .map(coachMapper.INSTANCE::toDTO)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<CoachDTO>> showAllCoaches(){
+        List<CoachDTO> coachDTOS = coachService.getAllCoaches();
+        return ResponseEntity.ok(coachDTOS);
     }
 
     @GetMapping("/coaches/{id}")
-    public CoachDTO showCoach(@PathVariable Long id){
-        Coach coach = coachService.getCoach(id);
-        return coachMapper.INSTANCE.toDTO(coach);
+    public ResponseEntity<CoachDTO> showCoach(@PathVariable Long id){
+        CoachDTO coachDTO = coachService.getCoach(id);
+        return ResponseEntity.ok(coachDTO);
     }
 
     @PostMapping("/coaches")
-    public Coach addNewCoach(@RequestBody Coach coach){
-        return coachService.save(coach);
+    public ResponseEntity<Coach> addNewCoach(@RequestBody Coach coach){
+        coachService.save(coach);
+        return new ResponseEntity<>(coach, HttpStatus.CREATED);
     }
 
     @PutMapping("/coaches")
-    public Coach updateCoach(@RequestBody Coach coach){
-        return coachService.updateCoach(coach);
+    public ResponseEntity<Coach> updateCoach(@RequestBody Coach coach){
+        coachService.updateCoach(coach);
+        return ResponseEntity.ok(coach);
     }
 
     @DeleteMapping("/coaches/{id}")
-    public void deleteCoachById(@PathVariable Long id){
+    public ResponseEntity<String> deleteCoachById(@PathVariable Long id){
         coachService.deleteCoach(id);
+        return new ResponseEntity<>(String.format("Coach with id %s was deleted", id), HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/coaches/{id}/photo")
-    public void addPhotoToCoach(@PathVariable Long id, @RequestParam String pathNameToPhoto){
+    public ResponseEntity<String> addPhotoToCoach(@PathVariable Long id, @RequestParam String pathNameToPhoto){
         coachService.setPhotoToCoach(id, pathNameToPhoto);
+        return ResponseEntity.ok("Set photo to coach");
     }
 }

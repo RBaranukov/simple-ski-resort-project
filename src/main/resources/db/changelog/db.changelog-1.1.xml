@@ -70,13 +70,9 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="ski_pass_id" type="BIGINT">
+            <column defaultValue="null" name="ski_pass_id" type="BIGINT">
                 <constraints nullable="true"/>
             </column>
-
-<!--            <column name="guest_id" type="BIGINT">-->
-<!--                <constraints nullable="true"/>-->
-<!--            </column>-->
         </createTable>
     </changeSet>
 </databaseChangeLog>

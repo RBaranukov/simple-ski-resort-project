@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface GuestService {
 
-    List<Guest> getAllGuests();
+    List<GuestDTO> getAllGuests();
 
     Guest save(Guest guest);
 
     Guest updateGuest(Guest guest);
 
-    Guest getGuest(Long id);
+    GuestDTO getGuest(Long id);
 
     void deleteGuest(Long id);
 
