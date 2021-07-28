@@ -1,8 +1,6 @@
 package com.example.ski_resort.baranukov.service;
 
 import com.example.ski_resort.baranukov.dto.SkiPassDTO;
-import com.example.ski_resort.baranukov.entity.Coach;
-import com.example.ski_resort.baranukov.entity.Guest;
 import com.example.ski_resort.baranukov.entity.SkiPass;
 import com.example.ski_resort.baranukov.exception.SkiPassNotFoundException;
 import com.example.ski_resort.baranukov.repository.CoachRepository;

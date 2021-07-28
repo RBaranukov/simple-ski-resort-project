@@ -75,6 +75,8 @@ public class GuestServiceImpl implements GuestService {
                 .orElseThrow(() -> new CoachNotFoundException(coach_id));
         guest.setCoach(coach);
         coach.getGuests().add(guest);
+        guestRepository.save(guest);
+        coachRepository.save(coach);
     }
 
     @Override
@@ -84,5 +86,6 @@ public class GuestServiceImpl implements GuestService {
         SkiPass skiPass = skiPassRepository.findById(skiPass_id)
                 .orElseThrow(() -> new SkiPassNotFoundException(skiPass_id));
         guest.setSkiPass(skiPass);
+        guestRepository.save(guest);
     }
 }

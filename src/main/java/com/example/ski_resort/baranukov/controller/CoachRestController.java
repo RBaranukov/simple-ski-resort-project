@@ -7,6 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,24 +31,28 @@ public class CoachRestController {
         return ResponseEntity.ok(coachDTO);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/coaches")
     public ResponseEntity<Coach> addNewCoach(@RequestBody Coach coach){
         coachService.save(coach);
         return new ResponseEntity<>(coach, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/coaches")
     public ResponseEntity<Coach> updateCoach(@RequestBody Coach coach){
         coachService.updateCoach(coach);
         return ResponseEntity.ok(coach);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/coaches/{id}")
     public ResponseEntity<String> deleteCoachById(@PathVariable Long id){
         coachService.deleteCoach(id);
         return new ResponseEntity<>(String.format("Coach with id %s was deleted", id), HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/coaches/{id}/photo")
     public ResponseEntity<String> addPhotoToCoach(@PathVariable Long id, @RequestParam String pathNameToPhoto){
         coachService.setPhotoToCoach(id, pathNameToPhoto);

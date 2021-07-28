@@ -15,21 +15,28 @@ public class EntityNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(CoachNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String coachNotFoundHandler(CoachNotFoundException ex){
+    String coachNotFoundHandler(CoachNotFoundException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(GuestNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String guestNotFoundHandler(GuestNotFoundException ex){
+    String guestNotFoundHandler(GuestNotFoundException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(SkiPassNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String skiPassNotFoundHandler(SkiPassNotFoundException ex){
+    String skiPassNotFoundHandler(SkiPassNotFoundException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String badRequest(Exception ex) {
         return ex.getMessage();
     }
 }

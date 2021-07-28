@@ -89,5 +89,6 @@ public class CoachServiceImpl implements CoachService{
             System.out.println(e.getMessage());
         }
         coach.setPhoto(photo);
+        coachRepository.save(coach);
     }
 }

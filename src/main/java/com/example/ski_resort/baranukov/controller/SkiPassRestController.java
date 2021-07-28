@@ -7,6 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,18 +31,21 @@ public class SkiPassRestController {
         return ResponseEntity.ok(skiPassDTO);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/ski-passes")
     public ResponseEntity<SkiPass> addNewSkiPass(@RequestBody SkiPass skiPass){
         skiPassService.save(skiPass);
         return new ResponseEntity<>(skiPass, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/ski-passes/")
     public ResponseEntity<SkiPass> updateSkiPass(@RequestBody SkiPass skiPass){
         skiPassService.updateSkiPass(skiPass);
         return ResponseEntity.ok(skiPass);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/ski-passes/{id}")
     public ResponseEntity<String> deleteSkiPass(@PathVariable Long id){
         skiPassService.deleteById(id);

@@ -4,9 +4,39 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet id="changelog-v1.3" author="rakhim_baranukov">
-        <dropTable tableName="guests"/>
-        <dropTable tableName="coaches"/>
-        <dropTable tableName="ski_passes"/>
+
+    <changeSet id="changelog-v1.5" author="rakhim_baranukov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+
+                <columnExists tableName="users" columnName="id"/>
+                <columnExists tableName="users" columnName="username"/>
+                <columnExists tableName="users" columnName="password"/>
+                <columnExists tableName="users" columnName="active"/>
+                <columnExists tableName="users" columnName="role"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="password" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column defaultValue="false" name="active" type="boolean">
+            </column>
+
+            <column defaultValue="ROLE_MANAGER" name="role" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

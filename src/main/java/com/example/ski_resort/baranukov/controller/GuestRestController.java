@@ -7,6 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,13 +49,14 @@ public class GuestRestController {
         return new ResponseEntity<>(String.format("Guest with id %s was deleted", id), HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/guests/{id}/{coach_id}")
+    @PostMapping("/guests/{id}/coach-{coach_id}")
     public ResponseEntity<String> addCoachToGuest(@PathVariable Long coach_id, @PathVariable Long id) {
         guestService.setCoachToGuest(coach_id, id);
         return ResponseEntity.ok(String.format("Set coach with id %s to guest with id %s", coach_id, id));
     }
 
-    @PostMapping("/guests/{id}/{ski_pass_id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/guests/{id}/skipass-{ski_pass_id}")
     public ResponseEntity<String> addSkiPassToGuest(@PathVariable Long ski_pass_id, @PathVariable Long id) {
         guestService.setSkiPassToGuest(ski_pass_id, id);
         return ResponseEntity.ok(String.format("Set SkiPass with id %s to guest with id %s", ski_pass_id, id));
