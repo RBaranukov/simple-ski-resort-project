@@ -1,55 +1,61 @@
 package com.example.ski_resort.baranukov.controller;
 
-
+import com.example.ski_resort.baranukov.dto.CoachDTO;
 import com.example.ski_resort.baranukov.entity.Coach;
 import com.example.ski_resort.baranukov.service.CoachService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/ski-resort")
+@RequiredArgsConstructor
 public class CoachRestController {
 
-    private final CoachService coachService;
-
-    CoachRestController(CoachService coachService){
-        this.coachService = coachService;
-    }
+    private final @NonNull CoachService coachService;
 
     @GetMapping("/coaches")
-    public List<Coach> showAllCoaches(){
-        return coachService.getAllCoaches();
+    public ResponseEntity<List<CoachDTO>> showAllCoaches(){
+        List<CoachDTO> coachDTOS = coachService.getAllCoaches();
+        return ResponseEntity.ok(coachDTOS);
     }
 
     @GetMapping("/coaches/{id}")
-    public Coach showCoach(@PathVariable Long id){
-        return coachService.getCoach(id);
+    public ResponseEntity<CoachDTO> showCoach(@PathVariable Long id){
+        CoachDTO coachDTO = coachService.getCoach(id);
+        return ResponseEntity.ok(coachDTO);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/coaches")
-    public Coach addNewCoach(@RequestBody Coach coach){
+    public ResponseEntity<Coach> addNewCoach(@RequestBody Coach coach){
         coachService.save(coach);
-        return coach;
+        return new ResponseEntity<>(coach, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/coaches")
-    public Coach updateCoach(@RequestBody Coach coach){
-        return coachService.updateCoach(coach);
+    public ResponseEntity<Coach> updateCoach(@RequestBody Coach coach){
+        coachService.updateCoach(coach);
+        return ResponseEntity.ok(coach);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/coaches/{id}")
-    public String deleteCoachById(@PathVariable Long id){
-        Coach coach = coachService.getCoach(id);
+    public ResponseEntity<String> deleteCoachById(@PathVariable Long id){
         coachService.deleteCoach(id);
-        return "Coach "  + coach.getName() + " was deleted";
+        return new ResponseEntity<>(String.format("Coach with id %s was deleted", id), HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/coaches/{id}/photo")
-    public Coach addPhotoToCoach(@PathVariable Long id, @RequestParam String pathNameToPhoto){
-        Coach coach = coachService.getCoach(id);
-        coachService.setPhotoToCoach(coach, pathNameToPhoto);
-        coachService.save(coach);
-        return coach;
+    public ResponseEntity<String> addPhotoToCoach(@PathVariable Long id, @RequestParam String pathNameToPhoto){
+        coachService.setPhotoToCoach(id, pathNameToPhoto);
+        return ResponseEntity.ok("Set photo to coach");
     }
 }

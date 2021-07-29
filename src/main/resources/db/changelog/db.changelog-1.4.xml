@@ -4,30 +4,27 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet author="rakhim_baranukov" id="changelog-v1.4">
 
+    <changeSet author="rakhim_baranukov" id="changelog-v1.4">
         <addForeignKeyConstraint baseTableName="guests"
                                  baseColumnNames="ski_pass_id"
                                  constraintName="fk_ski_pass_guest_id"
                                  referencedTableName="ski_passes"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
 
         <addForeignKeyConstraint baseTableName="guests"
                                  baseColumnNames="coach_id"
                                  constraintName="fk_guest_coach_id"
                                  referencedTableName="coaches"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
 
         <addForeignKeyConstraint baseTableName="coaches"
                                  baseColumnNames="ski_pass_id"
                                  constraintName="fk_ski_pass_coach_id"
                                  referencedTableName="ski_passes"
-                                 referencedColumnNames="id"/>
-
-        <addForeignKeyConstraint baseTableName="coaches"
-                                 baseColumnNames="guest_id"
-                                 constraintName="fk_coach_guest_id"
-                                 referencedTableName="guests"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
     </changeSet>
 </databaseChangeLog>

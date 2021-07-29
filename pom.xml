@@ -12,9 +12,10 @@
     <artifactId>ski-resort-Baranukov</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ski-resort-Baranukov</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Ski resort project Baranukov</description>
     <properties>
         <java.version>1.8</java.version>
+        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
     </properties>
     <dependencies>
         <dependency>
@@ -55,6 +56,17 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
