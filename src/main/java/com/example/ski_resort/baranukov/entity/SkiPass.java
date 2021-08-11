@@ -21,15 +21,12 @@ public class SkiPass {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "ss:mm:HH dd.MM.yyyy")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @Column(name = "duration")
     LocalDateTime duration;
 
-    @Column(name = "cost")
     BigDecimal cost;
 
     @OneToOne(mappedBy = "skiPass", fetch = FetchType.LAZY,

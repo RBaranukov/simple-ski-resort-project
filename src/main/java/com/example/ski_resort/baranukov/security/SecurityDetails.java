@@ -2,6 +2,7 @@ package com.example.ski_resort.baranukov.security;
 
 import com.example.ski_resort.baranukov.entity.Role;
 import com.example.ski_resort.baranukov.entity.User;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Setter
 public class SecurityDetails implements UserDetails {
 
     private final String username;

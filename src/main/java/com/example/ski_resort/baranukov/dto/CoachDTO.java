@@ -1,7 +1,6 @@
 package com.example.ski_resort.baranukov.dto;
 
 import com.example.ski_resort.baranukov.entity.Coach;
-import com.example.ski_resort.baranukov.entity.Guest;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -18,7 +18,7 @@ public class CoachDTO {
 
     Long id;
 
-    String name ,surname, category;
+    String name, surname, category;
 
     char sex;
 
@@ -32,7 +32,7 @@ public class CoachDTO {
 
     LocalDateTime skiPassDuration;
 
-    List<Guest> guests;
+    List<GuestDTO> guests;
 
     public CoachDTO(Coach coach) {
         this.id = coach.getId();
@@ -42,7 +42,10 @@ public class CoachDTO {
         this.sex = coach.getSex();
         this.birthDate = coach.getBirthDate();
         this.photo = coach.getPhoto();
-        this.guests = coach.getGuests();
+        Optional.ofNullable(coach.getGuests())
+                .ifPresent(coaches -> this.guests = coaches.stream()
+                        .map(GuestDTO::new)
+                        .collect(Collectors.toList()));
 
         Optional.ofNullable(coach.getSkiPass())
                 .ifPresent(skiPass -> {

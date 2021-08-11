@@ -1,12 +1,11 @@
-package com.example.ski_resort.baranukov.service;
+package com.example.ski_resort.baranukov.service.impl;
 
 import com.example.ski_resort.baranukov.dto.CoachDTO;
 import com.example.ski_resort.baranukov.entity.Coach;
-import com.example.ski_resort.baranukov.entity.Guest;
 import com.example.ski_resort.baranukov.exception.CoachNotFoundException;
 import com.example.ski_resort.baranukov.repository.CoachRepository;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.example.ski_resort.baranukov.service.CoachService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -19,10 +18,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
-public class CoachServiceImpl implements CoachService{
+@AllArgsConstructor
+public class CoachServiceImpl implements CoachService {
 
-    private final @NonNull CoachRepository coachRepository;
+    private final CoachRepository coachRepository;
 
     @Override
     public List<CoachDTO> getAllCoaches() {
@@ -37,9 +36,9 @@ public class CoachServiceImpl implements CoachService{
         return coachRepository.save(coach);
     }
 
-    public Coach updateCoach(Coach coach){
+    public Coach updateCoach(Coach coach) {
         Optional<Coach> optional = coachRepository.findById(coach.getId());
-        if(optional.isPresent()){
+        if (optional.isPresent()) {
             Coach updateCoach = optional.get();
             updateCoach.setId(coach.getId());
             updateCoach.setName(coach.getName());
@@ -49,7 +48,7 @@ public class CoachServiceImpl implements CoachService{
             updateCoach.setSex(coach.getSex());
             updateCoach.setCategory(coach.getCategory());
             return coachRepository.save(updateCoach);
-        } else throw  new CoachNotFoundException(coach.getId());
+        } else throw new CoachNotFoundException(coach.getId());
     }
 
     @Override
@@ -62,10 +61,9 @@ public class CoachServiceImpl implements CoachService{
     public void deleteCoach(Long id) {
         Coach coach = coachRepository.findById(id)
                 .orElseThrow(() -> new CoachNotFoundException(id));
-        List<Guest> guests = coach.getGuests();
-        if(!guests.isEmpty()){
-            guests.forEach(guest -> guest.setCoach(null));
-        }
+        Optional.ofNullable(coach.getGuests())
+                .ifPresent(guests1 -> guests1
+                        .forEach(guest -> guest.setCoach(null)));
         coachRepository.delete(coach);
     }
 
@@ -74,15 +72,15 @@ public class CoachServiceImpl implements CoachService{
         Coach coach = coachRepository.findById(id)
                 .orElseThrow(() -> new CoachNotFoundException(id));
 
-        byte [] photo = null;
+        byte[] photo = null;
 
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()){
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             BufferedImage originalImage =
                     ImageIO.read(new File(pathNameToPhoto));
 
             ImageIO.write(originalImage, "jpg", baos);
             baos.flush();
-            photo =  baos.toByteArray();
+            photo = baos.toByteArray();
 
             //save imageInByte as blob in database
         } catch (IOException e) {

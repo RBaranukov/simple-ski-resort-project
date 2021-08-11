@@ -1,4 +1,4 @@
-package com.example.ski_resort.baranukov.service;
+package com.example.ski_resort.baranukov.service.impl;
 
 import com.example.ski_resort.baranukov.dto.SkiPassDTO;
 import com.example.ski_resort.baranukov.entity.SkiPass;
@@ -6,8 +6,8 @@ import com.example.ski_resort.baranukov.exception.SkiPassNotFoundException;
 import com.example.ski_resort.baranukov.repository.CoachRepository;
 import com.example.ski_resort.baranukov.repository.GuestRepository;
 import com.example.ski_resort.baranukov.repository.SkiPassRepository;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.example.ski_resort.baranukov.service.SkiPassService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +15,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SkiPassServiceImpl implements SkiPassService {
 
-    private final @NonNull SkiPassRepository skiPassRepository;
-    private final @NonNull GuestRepository guestRepository;
-    private final @NonNull CoachRepository coachRepository;
+    private final SkiPassRepository skiPassRepository;
+    private final GuestRepository guestRepository;
+    private final CoachRepository coachRepository;
 
     @Override
     public List<SkiPassDTO> getAllSkiPasses() {

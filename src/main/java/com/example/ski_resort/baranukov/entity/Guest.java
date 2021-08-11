@@ -20,13 +20,10 @@ public class Guest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     Long id;
 
-    @Column(name = "name")
     String name;
 
-    @Column(name = "surname")
     String surname;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -34,12 +31,10 @@ public class Guest {
     @Column(name = "birth_date")
     LocalDate birthDate;
 
-    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ski_pass_id")
     SkiPass skiPass;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "coach_id")
