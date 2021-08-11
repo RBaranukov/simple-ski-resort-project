@@ -4,8 +4,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <include file="db/changelog/db.changelog-1.1.xml"/>
-    <include file="db/changelog/db.changelog-1.2.xml"/>
-    <include file="db/changelog/db.changelog-1.3.xml"/>
-    <include file="db/changelog/db.changelog-1.4.xml"/>
+    <include file="db/changelog/v1.0_create_tables_coaches_ski-passes.xml"/>
+    <include file="db/changelog/v1.1_create_table_guests.xml"/>
+    <include file="db/changelog/v1.2_create_table_users.xml"/>
+    <include file="db/changelog/v1.3_add_foreign_keys_to_all_tables.xml"/>
 </databaseChangeLog>

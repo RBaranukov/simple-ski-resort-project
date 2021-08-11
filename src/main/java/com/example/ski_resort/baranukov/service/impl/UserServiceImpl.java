@@ -1,23 +1,24 @@
-package com.example.ski_resort.baranukov.service;
+package com.example.ski_resort.baranukov.service.impl;
 
 import com.example.ski_resort.baranukov.entity.Role;
 import com.example.ski_resort.baranukov.entity.User;
 import com.example.ski_resort.baranukov.exception.RoleNotFoundException;
+import com.example.ski_resort.baranukov.exception.UserAlreadyExistException;
 import com.example.ski_resort.baranukov.exception.UserNotFoundException;
 import com.example.ski_resort.baranukov.repository.UserRepository;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.example.ski_resort.baranukov.service.UserService;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+@AllArgsConstructor
+public class UserServiceImpl implements UserService {
 
-    private final @NonNull UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public User findUserByName(String username) {
@@ -29,8 +30,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void saveUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        if(userRepository.existsByUsername(user.getUsername())){
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+        } else throw new UserAlreadyExistException();
     }
 
     @Override

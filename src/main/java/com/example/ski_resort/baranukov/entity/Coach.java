@@ -21,19 +21,14 @@ public class Coach {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     Long id;
 
-    @Column(name = "name")
     String name;
 
-    @Column(name = "surname")
     String surname;
 
-    @Column(name = "category")
     String category;
 
-    @Column(name = "sex")
     char sex;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet  author="rakhim_baranukov"  id="changelog-v1.2">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="guests"/>
+
+                <columnExists tableName="guests" columnName="id"/>
+                <columnExists tableName="guests" columnName="name"/>
+                <columnExists tableName="guests" columnName="surname"/>
+                <columnExists tableName="guests" columnName="birth_date"/>
+                <columnExists tableName="guests" columnName="date_of_visit"/>
+                <columnExists tableName="guests" columnName="ski_pass_id"/>
+                <columnExists tableName="guests" columnName="coach_id"/>
+            </not>
+        </preConditions>
+
+        <createTable  tableName="guests">
+            <column autoIncrement="true" name="id"  type="BIGINT">
+                <constraints  nullable="false"  primaryKey="true"/>
+            </column>
+
+            <column name="name" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="surname" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="birth_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="date_of_visit" type="date">
+                <constraints nullable="false"/>
+            </column>
+
+            <column defaultValue="0" name="ski_pass_id" type="BIGINT">
+                    <constraints nullable="true"/>
+            </column>
+
+            <column defaultValue="0" name="coach_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>

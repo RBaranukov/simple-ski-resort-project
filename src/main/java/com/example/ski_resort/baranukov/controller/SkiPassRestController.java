@@ -3,8 +3,7 @@ package com.example.ski_resort.baranukov.controller;
 import com.example.ski_resort.baranukov.dto.SkiPassDTO;
 import com.example.ski_resort.baranukov.entity.SkiPass;
 import com.example.ski_resort.baranukov.service.SkiPassService;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,17 +13,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ski-resort")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SkiPassRestController {
 
-    private final @NonNull SkiPassService skiPassService;
+    private final SkiPassService skiPassService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/ski-passes")
     public ResponseEntity<List<SkiPassDTO>> showAllSkiPasses(){
         List<SkiPassDTO> skiPassDTOS = skiPassService.getAllSkiPasses();
         return ResponseEntity.ok(skiPassDTOS);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/ski-passes/{id}")
     public ResponseEntity<SkiPassDTO> showSkiPass(@PathVariable Long id){
         SkiPassDTO skiPassDTO = skiPassService.getSkiPass(id);

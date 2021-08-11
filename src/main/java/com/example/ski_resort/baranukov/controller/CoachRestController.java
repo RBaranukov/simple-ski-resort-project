@@ -3,8 +3,7 @@ package com.example.ski_resort.baranukov.controller;
 import com.example.ski_resort.baranukov.dto.CoachDTO;
 import com.example.ski_resort.baranukov.entity.Coach;
 import com.example.ski_resort.baranukov.service.CoachService;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,17 +13,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ski-resort")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CoachRestController {
 
-    private final @NonNull CoachService coachService;
+    private final CoachService coachService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/coaches")
     public ResponseEntity<List<CoachDTO>> showAllCoaches(){
         List<CoachDTO> coachDTOS = coachService.getAllCoaches();
         return ResponseEntity.ok(coachDTOS);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/coaches/{id}")
     public ResponseEntity<CoachDTO> showCoach(@PathVariable Long id){
         CoachDTO coachDTO = coachService.getCoach(id);
@@ -53,7 +54,7 @@ public class CoachRestController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/coaches/{id}/photo")
+    @PutMapping("/coaches/{id}/photo")
     public ResponseEntity<String> addPhotoToCoach(@PathVariable Long id, @RequestParam String pathNameToPhoto){
         coachService.setPhotoToCoach(id, pathNameToPhoto);
         return ResponseEntity.ok("Set photo to coach");
