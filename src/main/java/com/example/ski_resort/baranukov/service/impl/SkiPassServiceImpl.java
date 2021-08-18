@@ -8,6 +8,7 @@ import com.example.ski_resort.baranukov.repository.GuestRepository;
 import com.example.ski_resort.baranukov.repository.SkiPassRepository;
 import com.example.ski_resort.baranukov.service.SkiPassService;
 import lombok.AllArgsConstructor;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class SkiPassServiceImpl implements SkiPassService {
     private final SkiPassRepository skiPassRepository;
     private final GuestRepository guestRepository;
     private final CoachRepository coachRepository;
+    private final JmsTemplate jmsProducer;
 
     @Override
     public List<SkiPassDTO> getAllSkiPasses() {
@@ -68,5 +70,14 @@ public class SkiPassServiceImpl implements SkiPassService {
             updateSkiPass.setCost(skiPass.getCost());
             return skiPassRepository.save(updateSkiPass);
         } else throw new SkiPassNotFoundException(skiPass.getId());
+    }
+
+    @Override
+    public void sendListOfSkiPasses() {
+        List<SkiPass> skiPasses = skiPassRepository.findAll();
+        if(!skiPasses.isEmpty()){
+            jmsProducer.setPubSubDomain(true);
+            jmsProducer.convertAndSend("topic.ski-passes", skiPasses);
+        }
     }
 }

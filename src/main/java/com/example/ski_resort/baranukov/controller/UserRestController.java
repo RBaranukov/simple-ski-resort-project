@@ -30,16 +30,23 @@ public class UserRestController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable Long id){
-        userService.delete(id);
+    @DeleteMapping("/users")
+    public ResponseEntity<String> deleteUserById(@RequestParam String username){
+        userService.deleteByUsername(username);
         return new ResponseEntity<>("User was deleted", HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("users/{id}/{roleName}")
-    public ResponseEntity<String> addRoleToUser(@PathVariable Long id, @PathVariable String roleName){
-        userService.setRoleToUser(id, roleName);
+    @PutMapping("users/{roleName}")
+    public ResponseEntity<String> addRoleToUser(@RequestParam String username, @PathVariable String roleName){
+        userService.setRoleToUser(username, roleName);
         return ResponseEntity.ok("Added role to User");
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/send/user/{username}")
+    public ResponseEntity<String> sendUser(@PathVariable String username){
+        userService.sendUser(username);
+        return new ResponseEntity<>("Send user", HttpStatus.OK);
     }
 }

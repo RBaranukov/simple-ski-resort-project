@@ -16,4 +16,6 @@ public interface SkiPassService {
     void deleteById(Long id);
 
     SkiPass updateSkiPass(SkiPass skiPass);
+
+    void sendListOfSkiPasses();
 }

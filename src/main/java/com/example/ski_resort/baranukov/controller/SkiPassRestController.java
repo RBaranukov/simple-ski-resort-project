@@ -52,4 +52,11 @@ public class SkiPassRestController {
         skiPassService.deleteById(id);
         return new ResponseEntity<>(String.format("SkiPass id %s was deleted", id), HttpStatus.NO_CONTENT);
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    @PostMapping("/send/ski-passes")
+    public ResponseEntity<String> sendListOfSkiPasses(){
+        skiPassService.sendListOfSkiPasses();
+        return new ResponseEntity<>("Send list of Ski-Passes", HttpStatus.OK);
+    }
 }

@@ -6,6 +6,7 @@ import com.example.ski_resort.baranukov.exception.CoachNotFoundException;
 import com.example.ski_resort.baranukov.repository.CoachRepository;
 import com.example.ski_resort.baranukov.service.CoachService;
 import lombok.AllArgsConstructor;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class CoachServiceImpl implements CoachService {
 
     private final CoachRepository coachRepository;
+    private final JmsTemplate jmsProducer;
 
     @Override
     public List<CoachDTO> getAllCoaches() {
@@ -88,5 +90,12 @@ public class CoachServiceImpl implements CoachService {
         }
         coach.setPhoto(photo);
         coachRepository.save(coach);
+    }
+
+    @Override
+    public void sendCoach(Long id) {
+        Coach coach = coachRepository.findById(id)
+                .orElseThrow(() -> new CoachNotFoundException(id));
+        jmsProducer.convertAndSend("queue.coach", coach);
     }
 }

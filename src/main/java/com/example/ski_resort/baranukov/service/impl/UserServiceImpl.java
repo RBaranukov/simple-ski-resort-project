@@ -8,6 +8,7 @@ import com.example.ski_resort.baranukov.exception.UserNotFoundException;
 import com.example.ski_resort.baranukov.repository.UserRepository;
 import com.example.ski_resort.baranukov.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
+    private final JmsTemplate jmsProducer;
 
     @Override
     public User findUserByName(String username) {
@@ -29,23 +31,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
-        if(userRepository.existsByUsername(user.getUsername())){
+    public User saveUser(User user) {
+        if(!userRepository.existsByUsername(user.getUsername())){
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
+            return userRepository.save(user);
         } else throw new UserAlreadyExistException();
     }
 
     @Override
-    public void delete(Long id) {
-        User user = userRepository.findById(id)
+    public void deleteByUsername(String username) {
+        User user = userRepository.findUserByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
     }
 
     @Override
-    public void setRoleToUser(Long userId, String roleName) {
-        User user = userRepository.findById(userId)
+    public void setRoleToUser(String username, String roleName) {
+        User user = userRepository.findUserByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
         if(roleName.equalsIgnoreCase(Role.ADMIN.name())){
             user.setRole(Role.ADMIN);
@@ -53,5 +55,12 @@ public class UserServiceImpl implements UserService {
             user.setRole(Role.MANAGER);
         } else throw new RoleNotFoundException();
         userRepository.save(user);
+    }
+
+    @Override
+    public void sendUser(String username) {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+        jmsProducer.convertAndSend("queue.user", user);
     }
 }

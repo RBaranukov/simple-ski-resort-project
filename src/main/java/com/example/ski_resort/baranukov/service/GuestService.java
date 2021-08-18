@@ -20,4 +20,8 @@ public interface GuestService {
     void setCoachToGuest(Long coach_id, Long id);
 
     void setSkiPassToGuest(Long skiPass_id, Long id);
+
+    void sendListOfGuests();
+
+    void send(Long id);
 }

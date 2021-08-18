@@ -13,6 +13,7 @@ import com.example.ski_resort.baranukov.entity.Guest;
 import com.example.ski_resort.baranukov.repository.SkiPassRepository;
 import com.example.ski_resort.baranukov.service.GuestService;
 import lombok.AllArgsConstructor;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class GuestServiceImpl implements GuestService {
     private final GuestRepository guestRepository;
     private final CoachRepository coachRepository;
     private final SkiPassRepository skiPassRepository;
+    private final JmsTemplate jmsProducer;
 
     @Override
     public List<GuestDTO> getAllGuests() {
@@ -87,5 +89,22 @@ public class GuestServiceImpl implements GuestService {
                 .orElseThrow(() -> new SkiPassNotFoundException(skiPass_id));
         guest.setSkiPass(skiPass);
         guestRepository.save(guest);
+    }
+
+    @Override
+    public void sendListOfGuests() {
+        List<Guest> guests = guestRepository.findAll();
+        if(!guests.isEmpty()){
+            jmsProducer.setPubSubDomain(true);
+            jmsProducer.convertAndSend("topic.guests", guests);
+        }
+    }
+
+    @Override
+    public void send(Long id) {
+        Guest guest = guestRepository.findById(id)
+                .orElseThrow(() -> new GuestNotFoundException(id));
+        jmsProducer.setPubSubDomain(true);
+        jmsProducer.convertAndSend("topic.guests", guest);
     }
 }

@@ -6,18 +6,18 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @AllArgsConstructor
-@EqualsAndHashCode
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "ski_passes")
-public class SkiPass {
+public class SkiPass implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +36,13 @@ public class SkiPass {
     @OneToOne(mappedBy = "skiPass", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     Coach coach;
+
+    @Override
+    public String toString() {
+        return "SkiPass{" +
+                "id=" + id +
+                ", duration=" + duration +
+                ", cost=" + cost +
+                '}';
+    }
 }

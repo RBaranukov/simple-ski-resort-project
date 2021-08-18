@@ -59,4 +59,11 @@ public class CoachRestController {
         coachService.setPhotoToCoach(id, pathNameToPhoto);
         return ResponseEntity.ok("Set photo to coach");
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(value = "/send/coach/{id}")
+    public ResponseEntity<String> sendCoach(@PathVariable Long id){
+        coachService.sendCoach(id);
+        return new ResponseEntity<>("Sent coach", HttpStatus.OK);
+    }
 }

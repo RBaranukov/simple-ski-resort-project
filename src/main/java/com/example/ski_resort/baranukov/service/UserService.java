@@ -4,11 +4,13 @@ import com.example.ski_resort.baranukov.entity.User;
 
 public interface UserService {
 
-    void saveUser(User user);
+    User saveUser(User user);
 
-    void delete(Long id);
+    void deleteByUsername(String username);
 
-    void setRoleToUser(Long userId, String roleName);
+    void setRoleToUser(String username, String roleName);
 
     User findUserByName(String username);
+
+    void sendUser(String username);
 }

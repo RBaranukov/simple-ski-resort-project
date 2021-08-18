@@ -4,16 +4,15 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@EqualsAndHashCode
 @Table(name = "users")
-public class User {
+public class User implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

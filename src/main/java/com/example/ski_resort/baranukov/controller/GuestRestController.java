@@ -66,4 +66,18 @@ public class GuestRestController {
         guestService.setSkiPassToGuest(ski_pass_id, id);
         return ResponseEntity.ok(String.format("Set SkiPass with id %s to guest with id %s", ski_pass_id, id));
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    @PostMapping("/send/guests")
+    public ResponseEntity<String> sendListOfGuests(){
+        guestService.sendListOfGuests();
+        return new ResponseEntity<>("Send list of guests", HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    @PostMapping("/send/guest/{id}")
+    public ResponseEntity<String> sendGuest(@PathVariable Long id){
+        guestService.send(id);
+        return new ResponseEntity<>("Send guest", HttpStatus.OK);
+    }
 }
