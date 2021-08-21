@@ -35,8 +35,7 @@ public class Guest implements Serializable {
     @JoinColumn(name = "ski_pass_id")
     SkiPass skiPass;
 
-    @ManyToOne(fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "coach_id")
     Coach coach;
 
@@ -53,7 +52,7 @@ public class Guest implements Serializable {
                 ", surname='" + surname + '\'' +
                 ", birthDate=" + birthDate +
                 ", skiPass=" + skiPass.getId() +
-                ", coach=" + coach.getName() + " " + coach.getSurname() +
+                ", coach="+ " " + coach.getName() + " " + coach.getSurname() +
                 ", dateOfVisit=" + dateOfVisit +
                 '}';
     }

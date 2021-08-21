@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/ski-resort")
 @AllArgsConstructor
-public class GuestRestController {
+public class GuestController {
 
     private final GuestService guestService;
 

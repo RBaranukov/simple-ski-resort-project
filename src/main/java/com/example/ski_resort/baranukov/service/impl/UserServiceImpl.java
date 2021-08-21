@@ -8,6 +8,12 @@ import com.example.ski_resort.baranukov.exception.UserNotFoundException;
 import com.example.ski_resort.baranukov.repository.UserRepository;
 import com.example.ski_resort.baranukov.service.UserService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,14 +22,19 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@CacheConfig(cacheNames = {"user"})
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final JmsTemplate jmsProducer;
 
+    private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
+    @Cacheable
     public User findUserByName(String username) {
+        logger.info("Find user {}", username);
         Optional<User> optionalUser = userRepository.findUserByUsername(username);
         if(optionalUser.isPresent()){
             return optionalUser.get();
@@ -31,6 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CachePut(key = "#user.username")
     public User saveUser(User user) {
         if(!userRepository.existsByUsername(user.getUsername())){
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -39,6 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(key = "#username")
     public void deleteByUsername(String username) {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(UserNotFoundException::new);

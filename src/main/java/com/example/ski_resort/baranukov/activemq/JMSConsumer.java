@@ -18,28 +18,28 @@ public class JMSConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(JMSConsumer.class);
 
-    @JmsListener(destination = "queue.coach")
+    @JmsListener(destination = "queue.coach", containerFactory = "queueFactory")
     public void receivedCoachFromQueue(Coach coach) {
         logger.info("Message received from queue: " + coach);
     }
 
-    @JmsListener(destination = "topic.guests")
+    @JmsListener(destination = "topic.guests", containerFactory = "topicFactory")
     public void receivedListOfGuestsFromTopic(List<Guest> guests){
-        logger.info("Message received from queue: " + guests);
+        logger.info("Message received from topic: " + guests);
     }
 
-    @JmsListener(destination = "topic.guests")
+    @JmsListener(destination = "topic.guests",containerFactory = "topicFactory" )
     public void receivedGuestFromTopic(Guest guest){
         logger.info("Message received from topic: " + guest);
     }
 
-    @JmsListener(destination = "topic.ski-passes")
+    @JmsListener(destination = "topic.ski-passes", containerFactory = "topicFactory")
     public void receivedListOfSkiPassesFromTopic(List<SkiPass> skiPasses){
-        logger.info("Message received from queue: " + skiPasses);
+        logger.info("Message received from topic: " + skiPasses);
     }
 
-    @JmsListener(destination = "queue.user")
+    @JmsListener(destination = "queue.user", containerFactory = "queueFactory")
     public void receivedUserFromTopic(User user){
-        logger.info("Message received from topic: " + user);
+        logger.info("Message received from queue: " + user);
     }
 }

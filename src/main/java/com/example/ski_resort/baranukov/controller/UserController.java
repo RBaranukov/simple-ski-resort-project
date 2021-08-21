@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/ski-resort")
 @AllArgsConstructor
-public class UserRestController {
+public class UserController {
 
     private final UserService userService;
 
