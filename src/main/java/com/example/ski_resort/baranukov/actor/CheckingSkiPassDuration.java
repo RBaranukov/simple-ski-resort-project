@@ -2,7 +2,6 @@ package com.example.ski_resort.baranukov.actor;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.actor.Props;
 import com.example.ski_resort.baranukov.service.GuestService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -16,20 +15,21 @@ import java.time.temporal.ChronoUnit;
 @RequiredArgsConstructor
 public class CheckingSkiPassDuration {
 
+    private final @NonNull ActorSystem actorSystem;
     private final @NonNull GuestService guestService;
+    private final @NonNull SpringExtension springExtension;
 
-    ActorSystem system = ActorSystem.create("ski-resort");
-
-    @Scheduled(cron = "* * 12 * * MON-SUN") // checks everyday at 12p.m. SkiPass duration
-    public void lessThanOneDayOfSkiPass(){
-        guestService.getAllGuests().forEach(guestDTO -> {
-            LocalDateTime skiPassDuration = guestDTO.getSkiPassDuration();
-            long oneDay = ChronoUnit.HOURS.between(skiPassDuration, LocalDateTime.now());
-            // If there is less than one day left, inform the guest about it
-            if (oneDay < 24) {
-                ActorRef senderToMQ = system.actorOf(Props.create(ActorSenderToActiveMQ.class, ActorSenderToActiveMQ::new));
-                senderToMQ.tell(guestDTO, ActorRef.noSender());
-            }
-        });
+    @Scheduled(cron = "0 07 23 * * *") // checks everyday at 12p.m. SkiPass duration
+    public void lessThanOneDayOfSkiPass() {
+        guestService.getAllGuests()
+                .forEach(guestDTO -> {
+                    LocalDateTime skiPassDuration = guestDTO.getSkiPassDuration();
+                    long oneDay = ChronoUnit.HOURS.between(LocalDateTime.now(), skiPassDuration);
+                    // If there is less than one day left, inform the guest about it
+                    if (oneDay < 24) {
+                        ActorRef senderToMQ = actorSystem.actorOf(springExtension.props("actorSenderToActiveMQ"), "sender");
+                        senderToMQ.tell(guestDTO, ActorRef.noSender());
+                    }
+                });
     }
 }

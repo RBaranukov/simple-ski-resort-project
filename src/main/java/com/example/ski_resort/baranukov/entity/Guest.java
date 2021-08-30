@@ -31,7 +31,7 @@ public class Guest implements Serializable {
     @Column(name = "birth_date")
     LocalDate birthDate;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ski_pass_id")
     SkiPass skiPass;
 

@@ -7,7 +7,6 @@ import com.example.ski_resort.baranukov.entity.SkiPass;
 import com.example.ski_resort.baranukov.entity.User;
 import com.example.ski_resort.baranukov.repository.GuestRepository;
 import com.example.ski_resort.baranukov.repository.SkiPassRepository;
-import com.example.ski_resort.baranukov.service.CoachService;
 import com.example.ski_resort.baranukov.service.GuestService;
 import com.example.ski_resort.baranukov.service.SkiPassService;
 import lombok.NonNull;
@@ -27,9 +26,8 @@ public class JMSConsumer {
 
     private final static Logger logger = LoggerFactory.getLogger(JMSConsumer.class);
     private final @NonNull GuestService guestService;
-    private final @NonNull CoachService coachService;
-    private final @NonNull SkiPassService skiPassService;
     private final @NonNull GuestRepository guestRepository;
+    private final @NonNull SkiPassService skiPassService;
     private final @NonNull SkiPassRepository skiPassRepository;
 
     @JmsListener(destination = "queue.coach", containerFactory = "queueFactory")
@@ -60,15 +58,13 @@ public class JMSConsumer {
     @JmsListener(destination = "topic.guests", containerFactory = "topicFactory")
     public void receivedGuestDTOFromTopic(GuestDTO guestDTO){
         logger.info("Message received from topic: " + guestDTO);
-        LocalDateTime skiPassDuration = guestDTO.getSkiPassDuration().plusDays(7);
-        Guest guest = null;
+        LocalDateTime skiPassDuration = LocalDateTime.now().plusDays(8);
         Optional<GuestDTO> optional = Optional.ofNullable(guestService.getGuest(guestDTO.getId()));
         if(optional.isPresent()){
-            guest = guestRepository.findById(guestDTO.getId()).get();
             SkiPass skiPass = skiPassRepository.findById(guestDTO.getSkiPassId()).get();
             skiPass.setDuration(skiPassDuration);
-            guest.setSkiPass(skiPass);
+            skiPassService.updateSkiPass(skiPass);
         }
-        guestService.updateGuest(guest);
+        logger.info("SkiPass was updated");
     }
 }

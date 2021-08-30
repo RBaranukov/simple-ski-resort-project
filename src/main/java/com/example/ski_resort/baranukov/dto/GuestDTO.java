@@ -4,6 +4,7 @@ import com.example.ski_resort.baranukov.entity.Guest;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ import java.util.Optional;
 @Getter
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GuestDTO {
+public class GuestDTO implements Serializable{
 
     Long id, skiPassId, coachId;
 
