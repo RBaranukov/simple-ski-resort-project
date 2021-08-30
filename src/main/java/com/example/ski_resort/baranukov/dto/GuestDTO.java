@@ -14,15 +14,13 @@ import java.util.Optional;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GuestDTO {
 
-    Long id;
+    Long id, skiPassId, coachId;
 
     String name, surname, coachNameSurname, coachCategory;
 
     LocalDate birthDate;
 
     char coachSex;
-
-    Long skiPassId;
 
     BigDecimal skiPassCost;
 
@@ -39,6 +37,7 @@ public class GuestDTO {
 
         Optional.ofNullable(guest.getCoach())
                 .ifPresent(coach -> {
+                    coachId = coach.getId();
                     coachNameSurname = coach.getName() + " " + coach.getSurname();
                     coachCategory = coach.getCategory();
                     coachSex = coach.getSex();
