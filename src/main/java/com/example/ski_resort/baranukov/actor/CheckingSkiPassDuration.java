@@ -19,7 +19,7 @@ public class CheckingSkiPassDuration {
     private final @NonNull GuestService guestService;
     private final @NonNull SpringExtension springExtension;
 
-    @Scheduled(cron = "0 07 23 * * *") // checks everyday at 12p.m. SkiPass duration
+    @Scheduled(cron = "0 16 15 * * *") // checks everyday at 12p.m. SkiPass duration
     public void lessThanOneDayOfSkiPass() {
         guestService.getAllGuests()
                 .forEach(guestDTO -> {

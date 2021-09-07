@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SkiPassDTO {

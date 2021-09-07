@@ -1,11 +1,10 @@
 package com.example.ski_resort.baranukov.activemq;
 
+import com.example.ski_resort.baranukov.dto.CoachDTO;
 import com.example.ski_resort.baranukov.dto.GuestDTO;
-import com.example.ski_resort.baranukov.entity.Coach;
-import com.example.ski_resort.baranukov.entity.Guest;
+import com.example.ski_resort.baranukov.dto.SkiPassDTO;
 import com.example.ski_resort.baranukov.entity.SkiPass;
 import com.example.ski_resort.baranukov.entity.User;
-import com.example.ski_resort.baranukov.repository.GuestRepository;
 import com.example.ski_resort.baranukov.repository.SkiPassRepository;
 import com.example.ski_resort.baranukov.service.GuestService;
 import com.example.ski_resort.baranukov.service.SkiPassService;
@@ -26,27 +25,26 @@ public class JMSConsumer {
 
     private final static Logger logger = LoggerFactory.getLogger(JMSConsumer.class);
     private final @NonNull GuestService guestService;
-    private final @NonNull GuestRepository guestRepository;
     private final @NonNull SkiPassService skiPassService;
     private final @NonNull SkiPassRepository skiPassRepository;
 
     @JmsListener(destination = "queue.coach", containerFactory = "queueFactory")
-    public void receivedCoachFromQueue(Coach coach) {
+    public void receivedCoachFromQueue(CoachDTO coach) {
         logger.info("Message received from queue: " + coach);
     }
 
     @JmsListener(destination = "topic.guests", containerFactory = "topicFactory")
-    public void receivedListOfGuestsFromTopic(List<Guest> guests){
+    public void receivedListOfGuestsFromTopic(List<GuestDTO> guests){
         logger.info("Message received from topic: " + guests);
     }
 
-    @JmsListener(destination = "topic.guests",containerFactory = "topicFactory" )
-    public void receivedGuestFromTopic(Guest guest){
+    @JmsListener(destination = "topic.guest",containerFactory = "topicFactory" )
+    public void receivedGuestFromTopic(GuestDTO guest){
         logger.info("Message received from topic: " + guest);
     }
 
     @JmsListener(destination = "topic.ski-passes", containerFactory = "topicFactory")
-    public void receivedListOfSkiPassesFromTopic(List<SkiPass> skiPasses){
+    public void receivedListOfSkiPassesFromTopic(List<SkiPassDTO> skiPasses){
         logger.info("Message received from topic: " + skiPasses);
     }
 
@@ -55,7 +53,7 @@ public class JMSConsumer {
         logger.info("Message received from queue: " + user);
     }
 
-    @JmsListener(destination = "topic.guests", containerFactory = "topicFactory")
+    @JmsListener(destination = "topic.guestProlongation", containerFactory = "topicFactory")
     public void receivedGuestDTOFromTopic(GuestDTO guestDTO){
         logger.info("Message received from topic: " + guestDTO);
         LocalDateTime skiPassDuration = LocalDateTime.now().plusDays(8);

@@ -95,8 +95,11 @@ public class GuestServiceImpl implements GuestService {
     public void sendListOfGuests() {
         List<Guest> guests = guestRepository.findAll();
         if(!guests.isEmpty()){
+            List<GuestDTO> guestDTOS = guests.stream()
+                    .map(GuestDTO::new)
+                    .collect(Collectors.toList());
             jmsProducer.setPubSubDomain(true);
-            jmsProducer.convertAndSend("topic.guests", guests);
+            jmsProducer.convertAndSend("topic.guests", guestDTOS);
         }
     }
 
@@ -104,7 +107,17 @@ public class GuestServiceImpl implements GuestService {
     public void send(Long id) {
         Guest guest = guestRepository.findById(id)
                 .orElseThrow(() -> new GuestNotFoundException(id));
+        GuestDTO guestDTO = new GuestDTO(guest);
         jmsProducer.setPubSubDomain(true);
-        jmsProducer.convertAndSend("topic.guests", guest);
+        jmsProducer.convertAndSend("topic.guest", guestDTO);
+    }
+
+    @Override
+    public void sendAndProlongSkiPass(Long id) {
+        Guest guest = guestRepository.findById(id)
+                .orElseThrow(() -> new GuestNotFoundException(id));
+        GuestDTO guestDTO = new GuestDTO(guest);
+        jmsProducer.setPubSubDomain(true);
+        jmsProducer.convertAndSend("topic.guestProlongation", guestDTO);
     }
 }

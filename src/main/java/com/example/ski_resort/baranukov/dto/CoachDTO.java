@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CoachDTO {

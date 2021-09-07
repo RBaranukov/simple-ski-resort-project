@@ -1,0 +1,47 @@
+version: "3.6"
+
+services:
+  ski-resort:
+    restart: always
+    container_name: resort_baranukov
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8082:8082
+    volumes:
+      - h2-db:/data
+    networks:
+      overlay:
+    depends_on:
+      - activemq
+  activemq:
+    image: rmohr/activemq:5.15.9-alpine
+    restart: always
+    ports:
+      # ui
+      - 8161:8161
+      # jms
+      - 61616:61616
+    environment:
+      ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT: "true"
+      ACTIVEMQ_ADMIN_LOGIN: admin
+      ACTIVEMQ_ADMIN_PASSWORD: admin
+      ACTIVEMQ_WRITE_LOGIN: write
+      ACTIVEMQ_WRITE_PASSWORD: admin
+      ACTIVEMQ_READ_LOGIN: read
+      ACTIVEMQ_READ_PASSWORD: admin
+      ACTIVEMQ_JMX_LOGIN: admin
+      ACTIVEMQ_JMX_PASSWORD: admin
+      #      ACTIVEMQ_STATIC_TOPICS: topic.guests;topic.guest;topic.ski-passes;topic.guestProlongation
+      #      ACTIVEMQ_STATIC_QUEUES: queue.coach;queue.user
+      ACTIVEMQ_ENABLED_SCHEDULER: "true"
+      ACTIVEMQ_MIN_MEMORY: 512
+      ACTIVEMQ_MAX_MEMORY: 2048
+    networks:
+      overlay:
+volumes:
+  h2-db:
+networks:
+  overlay:
+    driver: bridge

@@ -6,9 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 @Setter
@@ -18,7 +16,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "coaches")
-public class Coach implements Serializable {
+public class Coach{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,18 +45,4 @@ public class Coach implements Serializable {
     @OneToMany(mappedBy = "coach",
             cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     List<Guest> guests;
-
-    @Override
-    public String toString() {
-        return "Coach{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", category='" + category + '\'' +
-                ", sex=" + sex +
-                ", birthDate=" + birthDate +
-                ", photo=" + Arrays.toString(photo) +
-                ", skiPass=" + skiPass.getId() +
-                '}';
-    }
 }

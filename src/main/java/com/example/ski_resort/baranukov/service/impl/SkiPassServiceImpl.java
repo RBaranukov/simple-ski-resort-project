@@ -76,8 +76,11 @@ public class SkiPassServiceImpl implements SkiPassService {
     public void sendListOfSkiPasses() {
         List<SkiPass> skiPasses = skiPassRepository.findAll();
         if(!skiPasses.isEmpty()){
+            List<SkiPassDTO> skiPassDTOs = skiPasses.stream()
+                    .map(SkiPassDTO::new)
+                    .collect(Collectors.toList());
             jmsProducer.setPubSubDomain(true);
-            jmsProducer.convertAndSend("topic.ski-passes", skiPasses);
+            jmsProducer.convertAndSend("topic.ski-passes", skiPassDTOs);
         }
     }
 }

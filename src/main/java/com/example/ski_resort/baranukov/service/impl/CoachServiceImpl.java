@@ -96,6 +96,7 @@ public class CoachServiceImpl implements CoachService {
     public void sendCoach(Long id) {
         Coach coach = coachRepository.findById(id)
                 .orElseThrow(() -> new CoachNotFoundException(id));
-        jmsProducer.convertAndSend("queue.coach", coach);
+        CoachDTO coachDTO = new CoachDTO(coach);
+        jmsProducer.convertAndSend("queue.coach", coachDTO);
     }
 }

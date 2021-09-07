@@ -1,6 +1,7 @@
 HELP.md
 target/
 out/
+data/
 .mvn
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -8,7 +9,7 @@ out/
 mvnw
 mvnw.cmd
 ski-Baranukov.jpg
-ski-resort-Baranukov.iml
+ski_resort_baranukov.iml
 README.md
 
 

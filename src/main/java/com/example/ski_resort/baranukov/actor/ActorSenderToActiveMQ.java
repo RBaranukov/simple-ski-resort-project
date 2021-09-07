@@ -23,7 +23,7 @@ public class ActorSenderToActiveMQ extends UntypedAbstractActor {
     public void onReceive(Object message) {
         if(message instanceof GuestDTO){
             GuestDTO guestDTO = (GuestDTO) message;
-            guestService.send(guestDTO.getId());
+            guestService.sendAndProlongSkiPass(guestDTO.getId());
             logger.info("Send guest to ActiveMQ topic");
         } else unhandled(message);
     }

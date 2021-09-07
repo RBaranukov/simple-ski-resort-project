@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
         This class let us set fetch type to LAZY initialization
  */
 
-
 @Configuration
 public class JsonConfiguration {
 

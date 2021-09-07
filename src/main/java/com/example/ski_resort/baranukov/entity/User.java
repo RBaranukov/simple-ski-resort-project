@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,7 +11,7 @@ import java.io.Serializable;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users")
-public class User implements Serializable{
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

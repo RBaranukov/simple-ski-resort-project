@@ -24,4 +24,6 @@ public interface GuestService {
     void sendListOfGuests();
 
     void send(Long id);
+
+    void sendAndProlongSkiPass(Long id);
 }

@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @Setter
@@ -16,7 +15,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "guests")
-public class Guest implements Serializable {
+public class Guest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,17 +42,4 @@ public class Guest implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "date_of_visit")
     LocalDate dateOfVisit;
-
-    @Override
-    public String toString() {
-        return "Guest{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", birthDate=" + birthDate +
-                ", skiPass=" + skiPass.getId() +
-                ", coach="+ " " + coach.getName() + " " + coach.getSurname() +
-                ", dateOfVisit=" + dateOfVisit +
-                '}';
-    }
 }

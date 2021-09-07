@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>ski-resort-Baranukov</artifactId>
+    <artifactId>ski_resort_baranukov</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ski-resort-Baranukov</name>
     <description>Ski resort project Baranukov</description>
@@ -90,6 +90,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hibernate5</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.12.4</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe.akka</groupId>
