@@ -1,0 +1,26 @@
+version: "3.6"
+
+services:
+  ski-resort:
+    restart: always
+    container_name: resort_baranukov
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    ports:
+      - 8082:8082
+    volumes:
+      - h2-db:/data
+    depends_on:
+      - activemq
+  activemq:
+    image: webcenter/activemq
+    container_name: activemqcontainer
+    restart: always
+    ports:
+      - 8161:8161
+    environment:
+      ACTIVEMQ_ADMIN_LOGIN: admin
+      ACTIVEMQ_ADMIN_PASSWORD: admin
+volumes:
+  h2-db:
