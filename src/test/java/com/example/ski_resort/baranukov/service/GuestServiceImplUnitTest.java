@@ -33,32 +33,33 @@ public class GuestServiceImplUnitTest {
 
     @Test
     public void getGuestByIdAndEqualName() {
-        Guest guest = new Guest(1L, "Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
+        Guest guest = new Guest("Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
+        guest.setId(1L);
         Mockito.when(guestRepository.findById(1L)).thenReturn(Optional.of(guest));
 
-        GuestDTO guestDTO = guestService.getGuest(1L);
+        GuestDTO guestDTO = guestService.get(1L);
 
         assertEquals(guestDTO.getName(), guest.getName());
     }
 
     @Test
     public void getAllGuestsAndEqualListSize() {
-        Guest guest1 = new Guest(1L, "Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
-        Guest guest2 = new Guest(2L, "Igor", "Rambo", LocalDate.now(), null, null,  LocalDate.now());
+        Guest guest1 = new Guest("Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
+        Guest guest2 = new Guest("Igor", "Rambo", LocalDate.now(), null, null,  LocalDate.now());
         List<Guest> guests = Stream.of(guest1, guest2)
                 .collect(Collectors.toList());
 
         Mockito.when(guestRepository.findAll()).thenReturn(guests);
 
-        List<GuestDTO> guestDTOList = guestService.getAllGuests();
+        List<GuestDTO> guestDTOList = guestService.getAll();
 
         assertEquals(guestDTOList.size(), guests.size());
     }
 
     @Test
     public void saveGuestAndEqualName(){
-        Guest input = new Guest(1L, "Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
-        Guest returned = new Guest(1L, "Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
+        Guest input = new Guest("Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
+        Guest returned = new Guest("Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
 
         Mockito.when(guestRepository.save(input)).thenReturn(returned);
 
@@ -69,24 +70,27 @@ public class GuestServiceImplUnitTest {
 
     @Test
     public void deleteGuestTest(){
-        Guest input = new Guest(1L, "Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
+        Guest input = new Guest("Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
+        input.setId(1L);
 
         Mockito.when(guestRepository.findById(1L)).thenReturn(Optional.of(input));
         Mockito.doNothing().when(guestRepository).delete(input);
 
-        guestService.deleteGuest(input.getId());
+        guestService.delete(input.getId());
     }
 
     @Test
     public void updateGuestTest(){
-        Guest input = new Guest(1L, "Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
+        Guest input = new Guest("Roma", "Atnik", LocalDate.now(), null, null,  LocalDate.now());
+        input.setId(1L);
 
-        Guest returned = new Guest(2L, "Igor", "Rambo", LocalDate.now(), null, null,  LocalDate.now());
+        Guest returned = new Guest("Igor", "Rambo", LocalDate.now(), null, null,  LocalDate.now());
+        returned.setId(1L);
 
         Mockito.when(guestRepository.findById(1L)).thenReturn(Optional.of(input));
         Mockito.when(guestRepository.save(input)).thenReturn(returned);
 
-        Guest result = guestService.updateGuest(input);
+        Guest result = guestService.update(input);
 
         assertEquals("Igor", result.getName());
     }
@@ -94,6 +98,6 @@ public class GuestServiceImplUnitTest {
     @Test(expected = GuestNotFoundException.class)
     public void getGuestByIdAndThrowGuestNotFoundException(){
         Mockito.doThrow(new GuestNotFoundException(3L)).when(guestRepository).findById(3L);
-        guestService.getGuest(3L);
+        guestService.get(3L);
     }
 }

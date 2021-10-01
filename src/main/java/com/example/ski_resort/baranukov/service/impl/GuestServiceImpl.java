@@ -30,7 +30,7 @@ public class GuestServiceImpl implements GuestService {
     private final JmsTemplate jmsProducer;
 
     @Override
-    public List<GuestDTO> getAllGuests() {
+    public List<GuestDTO> getAll() {
         return guestRepository.findAll()
                 .stream()
                 .map(GuestDTO::new)
@@ -38,7 +38,7 @@ public class GuestServiceImpl implements GuestService {
     }
 
     @Override
-    public GuestDTO getGuest(Long id) {
+    public GuestDTO get(Long id) {
         return new GuestDTO(guestRepository.findById(id)
                 .orElseThrow(() -> new GuestNotFoundException(id)));
     }
@@ -49,7 +49,7 @@ public class GuestServiceImpl implements GuestService {
     }
 
     @Override
-    public Guest updateGuest(Guest guest) {
+    public Guest update(Guest guest) {
         Optional<Guest> optional = guestRepository.findById(guest.getId());
         if (optional.isPresent()) {
             Guest updateGuest = optional.get();
@@ -63,7 +63,7 @@ public class GuestServiceImpl implements GuestService {
     }
 
     @Override
-    public void deleteGuest(Long id) {
+    public void delete(Long id) {
         Guest guest = guestRepository.findById(id)
                 .orElseThrow(() -> new GuestNotFoundException(id));
         guestRepository.delete(guest);

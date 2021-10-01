@@ -15,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,35 +36,35 @@ public class JMSConsumer {
     }
 
     @JmsListener(destination = "topic.guests", containerFactory = "topicFactory")
-    public void receivedListOfGuestsFromTopic(List<GuestDTO> guests){
+    public void receivedListOfGuestsFromTopic(List<GuestDTO> guests) {
         logger.info("Message received from topic: " + guests);
     }
 
-    @JmsListener(destination = "topic.guest",containerFactory = "topicFactory" )
-    public void receivedGuestFromTopic(GuestDTO guest){
+    @JmsListener(destination = "topic.guest", containerFactory = "topicFactory")
+    public void receivedGuestFromTopic(GuestDTO guest) {
         logger.info("Message received from topic: " + guest);
     }
 
     @JmsListener(destination = "topic.ski-passes", containerFactory = "topicFactory")
-    public void receivedListOfSkiPassesFromTopic(List<SkiPassDTO> skiPasses){
+    public void receivedListOfSkiPassesFromTopic(List<SkiPassDTO> skiPasses) {
         logger.info("Message received from topic: " + skiPasses);
     }
 
     @JmsListener(destination = "queue.user", containerFactory = "queueFactory")
-    public void receivedUserFromTopic(User user){
+    public void receivedUserFromTopic(User user) {
         logger.info("Message received from queue: " + user);
     }
 
     @JmsListener(destination = "topic.guestProlongation", containerFactory = "topicFactory")
-    public void receivedGuestDTOFromTopic(GuestDTO guestDTO){
+    public void receivedGuestDTOFromTopic(GuestDTO guestDTO) {
         logger.info("Message received from topic: " + guestDTO);
-        LocalDateTime skiPassDuration = LocalDateTime.now().plusDays(8);
-        Optional<GuestDTO> optional = Optional.ofNullable(guestService.getGuest(guestDTO.getId()));
-        if(optional.isPresent()){
-            SkiPass skiPass = skiPassRepository.findById(guestDTO.getSkiPassId()).get();
-            skiPass.setDuration(skiPassDuration);
-            skiPassService.updateSkiPass(skiPass);
-        }
+        LocalDateTime skiPassDuration = LocalDateTime.of(LocalDate.now(), LocalTime.NOON).plusDays(7);
+        Optional.ofNullable(guestService.get(guestDTO.getId()))
+                .ifPresent( guest-> {
+                    SkiPass skiPass = skiPassRepository.findById(guest.getSkiPassId()).get();
+                    skiPass.setDuration(skiPassDuration);
+                    skiPassService.update(skiPass);
+                });
         logger.info("SkiPass was updated");
     }
 }

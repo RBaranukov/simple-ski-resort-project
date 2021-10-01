@@ -13,9 +13,9 @@ import java.util.Optional;
 @ToString
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GuestDTO{
+public class GuestDTO extends BaseDTO{
 
-    Long id, skiPassId, coachId;
+    Long skiPassId, coachId;
 
     String name, surname, coachNameSurname, coachCategory;
 

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/ski-resort")
@@ -20,15 +20,15 @@ public class CoachController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/coaches")
-    public ResponseEntity<List<CoachDTO>> showAllCoaches(){
-        List<CoachDTO> coachDTOS = coachService.getAllCoaches();
+    public ResponseEntity<Collection<CoachDTO>> showAllCoaches(){
+        Collection<CoachDTO> coachDTOS = coachService.getAll();
         return ResponseEntity.ok(coachDTOS);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/coaches/{id}")
     public ResponseEntity<CoachDTO> showCoach(@PathVariable Long id){
-        CoachDTO coachDTO = coachService.getCoach(id);
+        CoachDTO coachDTO = coachService.get(id);
         return ResponseEntity.ok(coachDTO);
     }
 
@@ -42,14 +42,14 @@ public class CoachController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/coaches")
     public ResponseEntity<Coach> updateCoach(@RequestBody Coach coach){
-        coachService.updateCoach(coach);
+        coachService.update(coach);
         return ResponseEntity.ok(coach);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/coaches/{id}")
     public ResponseEntity<String> deleteCoachById(@PathVariable Long id){
-        coachService.deleteCoach(id);
+        coachService.delete(id);
         return new ResponseEntity<>(String.format("Coach with id %s was deleted", id), HttpStatus.NO_CONTENT);
     }
 

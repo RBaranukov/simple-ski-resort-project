@@ -12,12 +12,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CoachDTO {
-
-    Long id;
+public class CoachDTO extends BaseDTO{
 
     String name, surname, category;
 
@@ -34,6 +33,8 @@ public class CoachDTO {
     LocalDateTime skiPassDuration;
 
     List<GuestDTO> guests;
+
+
 
     public CoachDTO(Coach coach) {
         this.id = coach.getId();

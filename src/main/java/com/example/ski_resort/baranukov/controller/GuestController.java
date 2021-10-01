@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -20,15 +21,15 @@ public class GuestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/guests")
-    public ResponseEntity<List<GuestDTO>> showAllGuests() {
-        List<GuestDTO> guestDTOS = guestService.getAllGuests();
+    public ResponseEntity<Collection<GuestDTO>> showAllGuests() {
+        Collection<GuestDTO> guestDTOS = guestService.getAll();
         return ResponseEntity.ok(guestDTOS);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/guests/{id}")
     public ResponseEntity<GuestDTO> showGuest(@PathVariable Long id) {
-        GuestDTO guestDTO = guestService.getGuest(id);
+        GuestDTO guestDTO = guestService.get(id);
         return ResponseEntity.ok(guestDTO);
     }
 
@@ -42,14 +43,14 @@ public class GuestController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @PutMapping("/guests")
     public ResponseEntity<Guest> updateGuest(@RequestBody Guest guest) {
-        guestService.updateGuest(guest);
+        guestService.update(guest);
         return ResponseEntity.ok(guest);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @DeleteMapping("/guests/{id}")
     public ResponseEntity<String> deleteGuest(@PathVariable Long id) {
-        guestService.deleteGuest(id);
+        guestService.delete(id);
         return new ResponseEntity<>(String.format("Guest with id %s was deleted", id), HttpStatus.NO_CONTENT);
     }
 
