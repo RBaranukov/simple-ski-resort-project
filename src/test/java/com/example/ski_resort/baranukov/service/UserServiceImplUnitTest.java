@@ -3,7 +3,7 @@ package com.example.ski_resort.baranukov.service;
 import com.example.ski_resort.baranukov.entity.Role;
 import com.example.ski_resort.baranukov.entity.User;
 import com.example.ski_resort.baranukov.exception.UserAlreadyExistException;
-import com.example.ski_resort.baranukov.exception.UserNotFoundException;
+import com.example.ski_resort.baranukov.exception.UserOrPasswordIncorrectException;
 import com.example.ski_resort.baranukov.repository.UserRepository;
 import com.example.ski_resort.baranukov.service.impl.UserServiceImpl;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public class UserServiceImplUnitTest {
 
     @Test
     public void deleteUserTest(){
-        User input = new User(2L, "Anna1996", bCryptPasswordEncoder.encode("qwerty123"), true, Role.MANAGER);
+        User input = new User(1L, "Anna1996", bCryptPasswordEncoder.encode("qwerty123"), true, Role.MANAGER);
 
         Mockito.when(userRepository.findUserByUsername("Anna1996")).thenReturn(Optional.of(input));
         Mockito.doNothing().when(userRepository).delete(input);
@@ -65,9 +65,9 @@ public class UserServiceImplUnitTest {
         userService.deleteByUsername("Anna1996");
     }
 
-    @Test(expected = UserNotFoundException.class)
+    @Test(expected = UserOrPasswordIncorrectException.class)
     public void getUserByUsernameAndThrowUserNotFoundException(){
-        Mockito.doThrow(new UserNotFoundException()).when(userRepository).findUserByUsername("Anna");
+        Mockito.doThrow(new UserOrPasswordIncorrectException()).when(userRepository).findUserByUsername("Anna");
         userService.findUserByName("Anna");
     }
 

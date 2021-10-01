@@ -11,23 +11,19 @@ import javax.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users")
-public class User{
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    @Column(name = "username")
     String username;
 
-    @Column(name = "password")
     String password;
 
     @Column(name = "active")
     boolean isActive;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "role")
     Role role;
 }

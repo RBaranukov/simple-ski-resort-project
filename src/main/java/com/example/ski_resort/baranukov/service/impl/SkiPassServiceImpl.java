@@ -25,7 +25,7 @@ public class SkiPassServiceImpl implements SkiPassService {
     private final JmsTemplate jmsProducer;
 
     @Override
-    public List<SkiPassDTO> getAllSkiPasses() {
+    public List<SkiPassDTO> getAll() {
         return skiPassRepository.findAll()
                 .stream()
                 .map(SkiPassDTO::new)
@@ -38,13 +38,13 @@ public class SkiPassServiceImpl implements SkiPassService {
     }
 
     @Override
-    public SkiPassDTO getSkiPass(Long id) {
+    public SkiPassDTO get(Long id) {
         return new SkiPassDTO(skiPassRepository.findById(id)
                 .orElseThrow(() -> new SkiPassNotFoundException(id)));
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void delete(Long id) {
         SkiPass skiPass = skiPassRepository.findById(id)
                 .orElseThrow(() -> new SkiPassNotFoundException(id));
 
@@ -61,7 +61,7 @@ public class SkiPassServiceImpl implements SkiPassService {
     }
 
     @Override
-    public SkiPass updateSkiPass(SkiPass skiPass) {
+    public SkiPass update(SkiPass skiPass) {
         Optional<SkiPass> optional = skiPassRepository.findById(skiPass.getId());
         if (optional.isPresent()) {
             SkiPass updateSkiPass = optional.get();

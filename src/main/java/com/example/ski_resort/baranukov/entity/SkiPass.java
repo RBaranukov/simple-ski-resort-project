@@ -16,11 +16,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "ski_passes")
-public class SkiPass {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class SkiPass extends BaseEntity {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "ss:mm:HH dd.MM.yyyy")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

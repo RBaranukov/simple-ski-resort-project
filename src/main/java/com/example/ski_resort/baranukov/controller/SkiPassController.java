@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -20,15 +21,15 @@ public class SkiPassController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/ski-passes")
-    public ResponseEntity<List<SkiPassDTO>> showAllSkiPasses(){
-        List<SkiPassDTO> skiPassDTOS = skiPassService.getAllSkiPasses();
+    public ResponseEntity<Collection<SkiPassDTO>> showAllSkiPasses(){
+        Collection<SkiPassDTO> skiPassDTOS = skiPassService.getAll();
         return ResponseEntity.ok(skiPassDTOS);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/ski-passes/{id}")
     public ResponseEntity<SkiPassDTO> showSkiPass(@PathVariable Long id){
-        SkiPassDTO skiPassDTO = skiPassService.getSkiPass(id);
+        SkiPassDTO skiPassDTO = skiPassService.get(id);
         return ResponseEntity.ok(skiPassDTO);
     }
 
@@ -42,14 +43,14 @@ public class SkiPassController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/ski-passes/")
     public ResponseEntity<SkiPass> updateSkiPass(@RequestBody SkiPass skiPass){
-        skiPassService.updateSkiPass(skiPass);
+        skiPassService.update(skiPass);
         return ResponseEntity.ok(skiPass);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/ski-passes/{id}")
     public ResponseEntity<String> deleteSkiPass(@PathVariable Long id){
-        skiPassService.deleteById(id);
+        skiPassService.delete(id);
         return new ResponseEntity<>(String.format("SkiPass id %s was deleted", id), HttpStatus.NO_CONTENT);
     }
 

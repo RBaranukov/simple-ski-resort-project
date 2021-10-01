@@ -2,17 +2,21 @@ package com.example.ski_resort.baranukov.actor;
 
 import akka.actor.Actor;
 import akka.actor.IndirectActorProducer;
-import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationContext;
 
-@AllArgsConstructor
 public class SpringActorProducer implements IndirectActorProducer {
-    private final ApplicationContext applicationContext;
+
     private final String actorBeanName;
+    private final ApplicationContext applicationContext;
+
+    public SpringActorProducer(ApplicationContext applicationContext, String actorBeanName) {
+        this.applicationContext = applicationContext;
+        this.actorBeanName = actorBeanName;
+    }
 
     @Override
     public Actor produce() {
-            return (Actor) applicationContext.getBean(actorBeanName);
+        return (Actor) applicationContext.getBean(actorBeanName);
     }
 
     @Override

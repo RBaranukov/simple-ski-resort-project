@@ -6,7 +6,6 @@ import com.example.ski_resort.baranukov.exception.CoachNotFoundException;
 import com.example.ski_resort.baranukov.repository.CoachRepository;
 import com.example.ski_resort.baranukov.service.CoachService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,7 @@ public class CoachServiceImpl implements CoachService {
     private final JmsTemplate jmsProducer;
 
     @Override
-    public List<CoachDTO> getAllCoaches() {
+    public Collection<CoachDTO> getAll() {
         return coachRepository.findAll()
                 .stream()
                 .map(CoachDTO::new)
@@ -39,7 +38,7 @@ public class CoachServiceImpl implements CoachService {
         return coachRepository.save(coach);
     }
 
-    public Coach updateCoach(Coach coach) {
+    public Coach update(Coach coach) {
         Optional<Coach> optional = coachRepository.findById(coach.getId());
         if (optional.isPresent()) {
             Coach updateCoach = optional.get();
@@ -55,13 +54,13 @@ public class CoachServiceImpl implements CoachService {
     }
 
     @Override
-    public CoachDTO getCoach(Long id) {
+    public CoachDTO get(Long id) {
         return new CoachDTO(coachRepository.findById(id)
                 .orElseThrow(() -> new CoachNotFoundException(id)));
     }
 
     @Override
-    public void deleteCoach(Long id) {
+    public void delete(Long id) {
         Coach coach = coachRepository.findById(id)
                 .orElseThrow(() -> new CoachNotFoundException(id));
         Optional.ofNullable(coach.getGuests())

@@ -11,9 +11,7 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SkiPassDTO {
-
-    Long id;
+public class SkiPassDTO extends BaseDTO{
 
     LocalDateTime duration;
 

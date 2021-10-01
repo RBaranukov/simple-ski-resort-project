@@ -6,6 +6,15 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet author="rakhim_baranukov" id="changelog-v1.4">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_ski_pass_guest_id"/>
+                <foreignKeyConstraintExists foreignKeyName="fk_guest_coach_id"/>
+                <foreignKeyConstraintExists foreignKeyName="fk_ski_pass_coach_id"/>
+            </not>
+        </preConditions>
+
         <addForeignKeyConstraint baseTableName="guests"
                                  baseColumnNames="ski_pass_id"
                                  constraintName="fk_ski_pass_guest_id"
