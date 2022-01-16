@@ -11,7 +11,7 @@ public interface GuestService extends BaseCRUDService<Guest, GuestDTO> {
 
     void sendListOfGuests();
 
-    void send(Long id);
+    void sendGuest(Long id);
 
     void sendAndProlongSkiPass(Long id);
 }

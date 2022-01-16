@@ -8,6 +8,7 @@ import com.example.ski_resort.baranukov.repository.GuestRepository;
 import com.example.ski_resort.baranukov.repository.SkiPassRepository;
 import com.example.ski_resort.baranukov.service.SkiPassService;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 public class SkiPassServiceImpl implements SkiPassService {
 
     private final SkiPassRepository skiPassRepository;
@@ -26,6 +28,7 @@ public class SkiPassServiceImpl implements SkiPassService {
 
     @Override
     public List<SkiPassDTO> getAll() {
+        log.info("Get all Skipasses");
         return skiPassRepository.findAll()
                 .stream()
                 .map(SkiPassDTO::new)
@@ -34,17 +37,20 @@ public class SkiPassServiceImpl implements SkiPassService {
 
     @Override
     public SkiPass save(SkiPass skiPass) {
+        log.info("Save Skipass");
         return skiPassRepository.save(skiPass);
     }
 
     @Override
     public SkiPassDTO get(Long id) {
+        log.info("Get Skipass");
         return new SkiPassDTO(skiPassRepository.findById(id)
                 .orElseThrow(() -> new SkiPassNotFoundException(id)));
     }
 
     @Override
     public void delete(Long id) {
+        log.info("Delete Skipass");
         SkiPass skiPass = skiPassRepository.findById(id)
                 .orElseThrow(() -> new SkiPassNotFoundException(id));
 
@@ -62,6 +68,7 @@ public class SkiPassServiceImpl implements SkiPassService {
 
     @Override
     public SkiPass update(SkiPass skiPass) {
+        log.info("Update Skipass");
         Optional<SkiPass> optional = skiPassRepository.findById(skiPass.getId());
         if (optional.isPresent()) {
             SkiPass updateSkiPass = optional.get();
@@ -74,6 +81,7 @@ public class SkiPassServiceImpl implements SkiPassService {
 
     @Override
     public void sendListOfSkiPasses() {
+        log.info("send list of Skipasses");
         List<SkiPass> skiPasses = skiPassRepository.findAll();
         if(!skiPasses.isEmpty()){
             List<SkiPassDTO> skiPassDTOs = skiPasses.stream()

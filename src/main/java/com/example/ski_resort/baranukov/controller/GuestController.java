@@ -10,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 @RequestMapping("/ski-resort")
@@ -78,7 +77,7 @@ public class GuestController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @PostMapping("/send/guest/{id}")
     public ResponseEntity<String> sendGuest(@PathVariable Long id){
-        guestService.send(id);
+        guestService.sendGuest(id);
         return new ResponseEntity<>("Send guest", HttpStatus.OK);
     }
 }

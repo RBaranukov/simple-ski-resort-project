@@ -9,8 +9,7 @@ import com.example.ski_resort.baranukov.repository.UserRepository;
 import com.example.ski_resort.baranukov.security.SecurityDetails;
 import com.example.ski_resort.baranukov.service.UserService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -26,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
+@Log4j2
 @AllArgsConstructor
 @CacheConfig(cacheNames = {"user"})
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -34,11 +34,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder bCryptPasswordEncoder;
     private final JmsTemplate jmsProducer;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("Load username {}", username);
         Optional<User> optionalUser = userRepository.findUserByUsername(username);
 
         if(optionalUser.isPresent()){
@@ -49,7 +48,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Cacheable
     public User findUserByName(String username) {
-        logger.info("Find user {}", username);
+        log.info("Find user {}", username);
         Optional<User> optionalUser = userRepository.findUserByUsername(username);
         if(optionalUser.isPresent()){
             return optionalUser.get();
@@ -60,6 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @CachePut(key = "#user.username")
     public User saveUser(User user) {
         if(!userRepository.existsByUsername(user.getUsername())){
+            log.info("Save user {}", user.getUsername());
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
         } else throw new UserAlreadyExistException();
@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @CacheEvict(key = "#username")
     public void deleteByUsername(String username) {
+        log.info("Delete user {}", username);
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(UserOrPasswordIncorrectException::new);
         userRepository.delete(user);
@@ -77,6 +78,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void setRoleToUser(String username, String roleName) {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(UserOrPasswordIncorrectException::new);
+        log.info("Setting role...");
         if(roleName.equalsIgnoreCase(Role.ADMIN.name())){
             user.setRole(Role.ADMIN);
         } else if (roleName.equalsIgnoreCase(Role.MANAGER.name())){
@@ -89,6 +91,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void sendUser(String username) {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(UserOrPasswordIncorrectException::new);
+        log.info("Send user {}", username);
         jmsProducer.convertAndSend("queue.user", user);
     }
 }

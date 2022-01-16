@@ -30,7 +30,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode("client-secret"))
                 .authorizedGrantTypes("password", "refresh_token")
                 .redirectUris("http://localhost:8081/oauth/login/client-app")
-                .scopes()
+                .scopes("read","write", "all")
                 .resourceIds("ski-resort")
                 .authorities("ADMIN", "MANAGER")
                 .accessTokenValiditySeconds(6000)
