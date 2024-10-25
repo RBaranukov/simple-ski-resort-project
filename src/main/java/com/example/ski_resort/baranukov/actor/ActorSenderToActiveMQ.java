@@ -3,6 +3,8 @@ package com.example.ski_resort.baranukov.actor;
 import akka.actor.*;
 import com.example.ski_resort.baranukov.dto.GuestDTO;
 import com.example.ski_resort.baranukov.service.GuestService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +12,13 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@RequiredArgsConstructor
 public class ActorSenderToActiveMQ extends AbstractActor {
 
-    private static final Logger logger = LoggerFactory.getLogger(ActorSenderToActiveMQ.class);
-
-    @Autowired
-    private GuestService guestService;
+    private final GuestService guestService;
 
     public static class Send{
         public final GuestDTO guestDTO;
@@ -30,12 +31,12 @@ public class ActorSenderToActiveMQ extends AbstractActor {
     @Override
     public void preStart() throws Exception {
         super.preStart();
-        logger.info("Migration actor started");
+        log.info("Migration actor started");
     }
 
     @Override
     public void postStop() throws Exception {
-        logger.info("Migration actor stopped");
+        log.info("Migration actor stopped");
         super.postStop();
     }
 
@@ -43,12 +44,12 @@ public class ActorSenderToActiveMQ extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(Send.class, this::onSend)
-                .matchAny(o -> logger.info("received unknown message"))
+                .matchAny(o -> log.info("received unknown message"))
                 .build();
     }
 
     private void onSend(Send send){
         guestService.sendAndProlongSkiPass(send.guestDTO.getId());
-        logger.info("Send guest to ActiveMQ topic");
+        log.info("Send guest to ActiveMQ topic");
     }
 }

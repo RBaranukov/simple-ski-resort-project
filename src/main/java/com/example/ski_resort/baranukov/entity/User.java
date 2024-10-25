@@ -3,14 +3,14 @@ package com.example.ski_resort.baranukov.entity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id

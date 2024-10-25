@@ -5,20 +5,20 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="changelog-v1.5" author="rakhim_baranukov">
+    <changeSet id="changelog-v1.5" author="RBaranukov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="users"/>
+                <tableExists tableName="user"/>
 
-                <columnExists tableName="users" columnName="id"/>
-                <columnExists tableName="users" columnName="username"/>
-                <columnExists tableName="users" columnName="password"/>
-                <columnExists tableName="users" columnName="active"/>
-                <columnExists tableName="users" columnName="role"/>
+                <columnExists tableName="user" columnName="id"/>
+                <columnExists tableName="user" columnName="username"/>
+                <columnExists tableName="user" columnName="password"/>
+                <columnExists tableName="user" columnName="active"/>
+                <columnExists tableName="user" columnName="role"/>
             </not>
         </preConditions>
 
-        <createTable tableName="users">
+        <createTable tableName="user">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>

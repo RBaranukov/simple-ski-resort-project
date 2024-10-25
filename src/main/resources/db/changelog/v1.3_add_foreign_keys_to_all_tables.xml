@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet author="rakhim_baranukov" id="changelog-v1.4">
+    <changeSet author="RBaranukov" id="changelog-v1.4">
 
         <preConditions onFail="MARK_RAN">
             <not>
@@ -15,24 +15,24 @@
             </not>
         </preConditions>
 
-        <addForeignKeyConstraint baseTableName="guests"
+        <addForeignKeyConstraint baseTableName="guest"
                                  baseColumnNames="ski_pass_id"
                                  constraintName="fk_ski_pass_guest_id"
-                                 referencedTableName="ski_passes"
+                                 referencedTableName="ski_pass"
                                  referencedColumnNames="id"
                                  onDelete="CASCADE"/>
 
-        <addForeignKeyConstraint baseTableName="guests"
+        <addForeignKeyConstraint baseTableName="guest"
                                  baseColumnNames="coach_id"
                                  constraintName="fk_guest_coach_id"
-                                 referencedTableName="coaches"
+                                 referencedTableName="coach"
                                  referencedColumnNames="id"
                                  onDelete="SET NULL"/>
 
-        <addForeignKeyConstraint baseTableName="coaches"
+        <addForeignKeyConstraint baseTableName="coach"
                                  baseColumnNames="ski_pass_id"
                                  constraintName="fk_ski_pass_coach_id"
-                                 referencedTableName="ski_passes"
+                                 referencedTableName="ski_pass"
                                  referencedColumnNames="id"
                                  onDelete="CASCADE"/>
     </changeSet>

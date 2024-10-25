@@ -1,6 +1,5 @@
 package com.example.ski_resort.baranukov.actor;
 
-
 import akka.actor.Extension;
 import akka.actor.Props;
 
@@ -8,11 +7,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by Baranukov Rakhim.
- *
  * An Akka Extension to provide access to Spring managed Actor Beans.
- *
+ * <p>
  * The Extension implementation.
+ * <p>
+ * Created by Baranukov Rakhim.
  */
 
 @Component
@@ -22,7 +21,6 @@ public class SpringExtension implements Extension {
 
     /**
      * Used to initialize the Spring application context for the extension.
-     *
      * @param applicationContext
      */
     public void initialize(ApplicationContext applicationContext) {

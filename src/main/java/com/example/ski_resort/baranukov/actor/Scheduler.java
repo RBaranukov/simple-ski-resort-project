@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 
@@ -21,7 +21,7 @@ public class Scheduler {
 
     ActorRef actor;
 
-    @Scheduled(cron = "0 0 12 * * *") // checks everyday at 12 p.m. SkiPass duration
+    @Scheduled(cron = "0 0 12 * * *") // checks every day at 12 p.m. SkiPass duration
     public void checkSkiPassDuration() {
         guestService.getAll()
                 .forEach(guestDTO -> {
