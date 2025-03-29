@@ -63,7 +63,7 @@ public class GuestServiceImpl implements GuestService {
             updateGuest.setName(guest.getName());
             updateGuest.setSurname(guest.getSurname());
             updateGuest.setBirthDate(guest.getBirthDate());
-            updateGuest.setDateOfVisit(guest.getDateOfVisit());
+            updateGuest.setVisitDate(guest.getVisitDate());
             return guestRepository.save(updateGuest);
         } else throw new SkiPassNotFoundException(guest.getId());
     }

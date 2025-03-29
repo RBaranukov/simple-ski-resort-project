@@ -1,8 +1,10 @@
 package com.example.ski_resort.baranukov.dto;
 
 import com.example.ski_resort.baranukov.entity.Coach;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,28 +17,28 @@ import java.util.stream.Collectors;
 @Setter
 @ToString
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class CoachDTO extends BaseDTO{
+public class CoachDTO extends BaseDTO {
 
-    String name, surname, category;
+    private String name;
+    private String surname;
+    private String category;
 
-    char sex;
+    private char sex;
 
-    LocalDate birthDate;
+    private LocalDate birthDate;
 
-    byte[] photo;
+    private byte[] photo;
 
-    Long skiPassId;
+    private Long skiPassId;
 
-    BigDecimal skiPassCost;
+    private BigDecimal skiPassCost;
 
-    LocalDateTime skiPassDuration;
+    private LocalDateTime skiPassDuration;
 
-    List<GuestDTO> guests;
+    private List<GuestDTO> guests;
 
 
-
-    public CoachDTO(Coach coach) {
+    public CoachDTO(final Coach coach) {
         this.id = coach.getId();
         this.name = coach.getName();
         this.surname = coach.getSurname();
@@ -51,9 +53,9 @@ public class CoachDTO extends BaseDTO{
 
         Optional.ofNullable(coach.getSkiPass())
                 .ifPresent(skiPass -> {
-                    skiPassId = skiPass.getId();
-                    skiPassCost = skiPass.getCost();
-                    skiPassDuration = skiPass.getDuration();
+                    this.skiPassId = skiPass.getId();
+                    this.skiPassCost = skiPass.getCost();
+                    this.skiPassDuration = skiPass.getDuration();
                 });
     }
 }

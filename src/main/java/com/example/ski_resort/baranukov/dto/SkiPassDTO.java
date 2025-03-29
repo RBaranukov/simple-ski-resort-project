@@ -10,15 +10,14 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class SkiPassDTO extends BaseDTO{
 
-    LocalDateTime duration;
+    private LocalDateTime duration;
 
-    BigDecimal cost;
+    private BigDecimal cost;
 
-    public SkiPassDTO (SkiPass skiPass){
-        this.id = skiPass.getId();
+    public SkiPassDTO (final SkiPass skiPass){
+        this.id = (skiPass.getId());
         this.duration = skiPass.getDuration();
         this.cost = skiPass.getCost();
     }

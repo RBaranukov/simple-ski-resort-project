@@ -9,7 +9,8 @@ import com.example.ski_resort.baranukov.repository.SkiPassRepository;
 import com.example.ski_resort.baranukov.service.SkiPassService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.jms.core.JmsTemplate;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class SkiPassServiceImpl implements SkiPassService {
     private final SkiPassRepository skiPassRepository;
     private final GuestRepository guestRepository;
     private final CoachRepository coachRepository;
-    private final JmsTemplate jmsProducer;
+    private final KafkaTemplate kafkaTemplate;
 
     @Override
     public List<SkiPassDTO> getAll() {
@@ -83,12 +84,15 @@ public class SkiPassServiceImpl implements SkiPassService {
     public void sendListOfSkiPasses() {
         log.info("send list of Skipasses");
         List<SkiPass> skiPasses = skiPassRepository.findAll();
+
         if(!skiPasses.isEmpty()){
             List<SkiPassDTO> skiPassDTOs = skiPasses.stream()
                     .map(SkiPassDTO::new)
-                    .collect(Collectors.toList());
-            jmsProducer.setPubSubDomain(true);
-            jmsProducer.convertAndSend("topic.ski-passes", skiPassDTOs);
+                    .toList();
+            final var record = new ProducerRecord<>("skipass", skiPassDTOs);
+
+
+            kafkaTemplate.send(record);
         }
     }
 }

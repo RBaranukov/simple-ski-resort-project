@@ -1,41 +1,38 @@
 package com.example.ski_resort.baranukov.entity;
 
-import com.fasterxml.jackson.annotation.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "guests")
 public class Guest extends BaseEntity{
 
-    String name;
+    private String name;
 
-    String surname;
+    private String surname;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "birth_date")
-    LocalDate birthDate;
+    private LocalDate birthDate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ski_pass_id")
-    SkiPass skiPass;
+    private SkiPass skiPass;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "coach_id")
-    Coach coach;
+    private Coach coach;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    @Column(name = "date_of_visit")
-    LocalDate dateOfVisit;
+    @Column(name = "visit_date")
+    private LocalDate visitDate;
 }

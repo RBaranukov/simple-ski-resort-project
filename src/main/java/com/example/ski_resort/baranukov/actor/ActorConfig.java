@@ -1,13 +1,13 @@
 package com.example.ski_resort.baranukov.actor;
 
 import akka.actor.ActorSystem;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ActorConfig {
     private final ApplicationContext applicationContext;
     private final SpringExtension springExtension;

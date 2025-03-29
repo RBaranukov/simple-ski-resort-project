@@ -1,4 +1,4 @@
-package com.example.ski_resort.baranukov.service;
+package com.example.ski_resort.service;
 
 import com.example.ski_resort.baranukov.entity.Role;
 import com.example.ski_resort.baranukov.entity.User;
@@ -6,21 +6,16 @@ import com.example.ski_resort.baranukov.exception.UserAlreadyExistException;
 import com.example.ski_resort.baranukov.exception.UserOrPasswordIncorrectException;
 import com.example.ski_resort.baranukov.repository.UserRepository;
 import com.example.ski_resort.baranukov.service.impl.UserServiceImpl;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class UserServiceImplUnitTest {
 
     @Mock

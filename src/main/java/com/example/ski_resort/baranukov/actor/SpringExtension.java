@@ -8,11 +8,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by Baranukov Rakhim.
- *
  * An Akka Extension to provide access to Spring managed Actor Beans.
- *
+
  * The Extension implementation.
+ * @author  Baranukov Rakhim
+
  */
 
 @Component
@@ -23,7 +23,7 @@ public class SpringExtension implements Extension {
     /**
      * Used to initialize the Spring application context for the extension.
      *
-     * @param applicationContext
+     * @param applicationContext - Spring context
      */
     public void initialize(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;

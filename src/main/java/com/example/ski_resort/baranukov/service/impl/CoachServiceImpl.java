@@ -16,7 +16,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +40,9 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public Coach save(Coach coach) {
+
+        Map<String, String> map = new ConcurrentHashMap<>();
+        map.computeIfAbsent("key", k -> new String());
         log.info("Save coach");
         return coachRepository.save(coach);
     }

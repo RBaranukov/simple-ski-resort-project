@@ -1,17 +1,14 @@
-package com.example.ski_resort.baranukov.service;
+package com.example.ski_resort.service;
 
 import com.example.ski_resort.baranukov.dto.SkiPassDTO;
 import com.example.ski_resort.baranukov.entity.SkiPass;
 import com.example.ski_resort.baranukov.exception.SkiPassNotFoundException;
 import com.example.ski_resort.baranukov.repository.SkiPassRepository;
 import com.example.ski_resort.baranukov.service.impl.SkiPassServiceImpl;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,8 +19,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class SkiPassServiceImplUnitTest {
 
     @Mock

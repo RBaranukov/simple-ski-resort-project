@@ -1,15 +1,12 @@
-package com.example.ski_resort.baranukov.service;
+package com.example.ski_resort.service;
 
 import com.example.ski_resort.baranukov.dto.CoachDTO;
 import com.example.ski_resort.baranukov.entity.Coach;
 import com.example.ski_resort.baranukov.exception.CoachNotFoundException;
 import com.example.ski_resort.baranukov.repository.CoachRepository;
 import com.example.ski_resort.baranukov.service.impl.CoachServiceImpl;
-import org.junit.runner.RunWith;
 import org.mockito.*;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.junit.Test;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -20,8 +17,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class CoachServiceImplUnitTest {
 
     @Mock
@@ -96,7 +91,7 @@ public class CoachServiceImplUnitTest {
         assertEquals("Andrey", result.getName());
     }
 
-    @Test(expected = CoachNotFoundException.class)
+    @Test(CoachNotFoundException.class)
     public void getCoachByIdAndThrowCoachNotFoundException(){
         Mockito.doThrow(new CoachNotFoundException(3L)).when(coachRepository).findById(3L);
         coachService.get(3L);

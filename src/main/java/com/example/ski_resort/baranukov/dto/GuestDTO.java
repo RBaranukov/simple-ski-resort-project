@@ -2,7 +2,6 @@ package com.example.ski_resort.baranukov.dto;
 
 import com.example.ski_resort.baranukov.entity.Guest;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,29 +11,32 @@ import java.util.Optional;
 @Getter
 @ToString
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class GuestDTO extends BaseDTO{
 
-    Long skiPassId, coachId;
+    private Long skiPassId;
+    private Long coachId;
 
-    String name, surname, coachNameSurname, coachCategory;
+    private String name;
+    private String surname;
+    private String coachNameSurname;
+    private String coachCategory;
 
-    LocalDate birthDate;
+    private LocalDate birthDate;
 
-    char coachSex;
+    private char coachSex;
 
-    BigDecimal skiPassCost;
+    private BigDecimal skiPassCost;
 
-    LocalDateTime skiPassDuration;
+    private LocalDateTime skiPassDuration;
 
-    LocalDate dateOfVisit;
+    private LocalDate visitDate;
 
-    public GuestDTO(Guest guest) {
+    public GuestDTO(final Guest guest) {
         this.id = guest.getId();
         this.name = guest.getName();
         this.surname = guest.getSurname();
         this.birthDate = guest.getBirthDate();
-        this.dateOfVisit = guest.getDateOfVisit();
+        this.visitDate = guest.getVisitDate();
 
         Optional.ofNullable(guest.getCoach())
                 .ifPresent(coach -> {

@@ -1,29 +1,26 @@
 package com.example.ski_resort.baranukov.entity;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
-    String username;
+    private String username;
 
-    String password;
+    private String password;
 
     @Column(name = "active")
-    boolean isActive;
+    private boolean isActive;
 
     @Enumerated(value = EnumType.STRING)
-    Role role;
+    private Role role;
 }

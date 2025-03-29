@@ -1,17 +1,14 @@
-package com.example.ski_resort.baranukov.service;
+package com.example.ski_resort.service;
 
 import com.example.ski_resort.baranukov.dto.GuestDTO;
 import com.example.ski_resort.baranukov.entity.Guest;
 import com.example.ski_resort.baranukov.exception.GuestNotFoundException;
 import com.example.ski_resort.baranukov.repository.GuestRepository;
 import com.example.ski_resort.baranukov.service.impl.GuestServiceImpl;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,10 +16,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class GuestServiceImplUnitTest {
 
     @Mock
