@@ -2,19 +2,18 @@ package com.example.ski_resort.baranukov.service.impl;
 
 import com.example.ski_resort.baranukov.dto.GuestDTO;
 import com.example.ski_resort.baranukov.entity.Coach;
+import com.example.ski_resort.baranukov.entity.Guest;
 import com.example.ski_resort.baranukov.entity.SkiPass;
 import com.example.ski_resort.baranukov.exception.CoachNotFoundException;
 import com.example.ski_resort.baranukov.exception.GuestNotFoundException;
 import com.example.ski_resort.baranukov.exception.SkiPassNotFoundException;
 import com.example.ski_resort.baranukov.repository.CoachRepository;
 import com.example.ski_resort.baranukov.repository.GuestRepository;
-import com.example.ski_resort.baranukov.entity.Guest;
-
 import com.example.ski_resort.baranukov.repository.SkiPassRepository;
 import com.example.ski_resort.baranukov.service.GuestService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.jms.core.JmsTemplate;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class GuestServiceImpl implements GuestService {
     private final GuestRepository guestRepository;
     private final CoachRepository coachRepository;
     private final SkiPassRepository skiPassRepository;
-    private final JmsTemplate jmsProducer;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
     public List<GuestDTO> getAll() {
@@ -108,8 +107,7 @@ public class GuestServiceImpl implements GuestService {
             List<GuestDTO> guestDTOS = guests.stream()
                     .map(GuestDTO::new)
                     .collect(Collectors.toList());
-            jmsProducer.setPubSubDomain(true);
-            jmsProducer.convertAndSend("topic.guests", guestDTOS);
+            kafkaTemplate.send("topic.guests", guestDTOS);
         }
     }
 
@@ -119,8 +117,7 @@ public class GuestServiceImpl implements GuestService {
         Guest guest = guestRepository.findById(id)
                 .orElseThrow(() -> new GuestNotFoundException(id));
         GuestDTO guestDTO = new GuestDTO(guest);
-        jmsProducer.setPubSubDomain(true);
-        jmsProducer.convertAndSend("topic.guest", guestDTO);
+        kafkaTemplate.send("topic.guest", guestDTO);
     }
 
     @Override
@@ -129,7 +126,6 @@ public class GuestServiceImpl implements GuestService {
         Guest guest = guestRepository.findById(id)
                 .orElseThrow(() -> new GuestNotFoundException(id));
         GuestDTO guestDTO = new GuestDTO(guest);
-        jmsProducer.setPubSubDomain(true);
-        jmsProducer.convertAndSend("topic.guestProlongation", guestDTO);
+        kafkaTemplate.send("topic.guestProlongation", guestDTO);
     }
 }

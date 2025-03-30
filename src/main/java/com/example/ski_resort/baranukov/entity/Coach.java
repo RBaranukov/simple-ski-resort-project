@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "coaches")
-public class Coach extends BaseEntity{
+public class Coach extends BaseEntity {
 
     private String name;
 
@@ -30,7 +30,7 @@ public class Coach extends BaseEntity{
     @Column(columnDefinition = "LONGBLOB", name = "photo")
     private byte[] photo;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ski_pass_id")
     private SkiPass skiPass;
 

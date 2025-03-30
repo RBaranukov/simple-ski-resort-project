@@ -9,7 +9,6 @@ import com.example.ski_resort.baranukov.repository.SkiPassRepository;
 import com.example.ski_resort.baranukov.service.SkiPassService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class SkiPassServiceImpl implements SkiPassService {
     private final SkiPassRepository skiPassRepository;
     private final GuestRepository guestRepository;
     private final CoachRepository coachRepository;
-    private final KafkaTemplate kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
     public List<SkiPassDTO> getAll() {
@@ -89,10 +88,10 @@ public class SkiPassServiceImpl implements SkiPassService {
             List<SkiPassDTO> skiPassDTOs = skiPasses.stream()
                     .map(SkiPassDTO::new)
                     .toList();
-            final var record = new ProducerRecord<>("skipass", skiPassDTOs);
+//            final var record = new ProducerRecord<>("skipass", skiPassDTOs);
 
 
-            kafkaTemplate.send(record);
+            kafkaTemplate.send("skipass", skiPassDTOs);
         }
     }
 }

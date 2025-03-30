@@ -1,16 +1,8 @@
 HELP.md
-target/
-out/
-data/
-.mvn
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-mvnw
-mvnw.cmd
 ski-Baranukov.jpg
 ski_resort_baranukov.iml
 README.md
+.gradle
 
 
 ### STS ###

@@ -14,7 +14,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.jms.core.JmsTemplate;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
-    private final JmsTemplate jmsProducer;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
     @Transactional(readOnly = true)
@@ -92,6 +92,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(UserOrPasswordIncorrectException::new);
         log.info("Send user {}", username);
-        jmsProducer.convertAndSend("queue.user", user);
+        kafkaTemplate.send("queue.user", user);
     }
 }

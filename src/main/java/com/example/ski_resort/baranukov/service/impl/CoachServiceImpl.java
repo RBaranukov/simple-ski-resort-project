@@ -7,7 +7,7 @@ import com.example.ski_resort.baranukov.repository.CoachRepository;
 import com.example.ski_resort.baranukov.service.CoachService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.jms.core.JmsTemplate;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class CoachServiceImpl implements CoachService {
 
     private final CoachRepository coachRepository;
-    private final JmsTemplate jmsProducer;
+    private final KafkaTemplate<String, Object> jmsProducer;
 
     @Override
     public Collection<CoachDTO> getAll() {
@@ -111,6 +111,6 @@ public class CoachServiceImpl implements CoachService {
         Coach coach = coachRepository.findById(id)
                 .orElseThrow(() -> new CoachNotFoundException(id));
         CoachDTO coachDTO = new CoachDTO(coach);
-        jmsProducer.convertAndSend("queue.coach", coachDTO);
+        jmsProducer.send("queue.coach", coachDTO);
     }
 }
